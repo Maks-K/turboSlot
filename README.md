@@ -1,0 +1,2 @@
+# turboSlot
+educational project
