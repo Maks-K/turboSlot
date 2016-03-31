@@ -4,10 +4,15 @@ function SpinModule (reels){
 
 	this.reelsState = [ 'stopped','stopped','stopped'];
 
-	this.ReelSpinStart = function(reelNumber, delay){
+	addListener('reelSpinStopped', function(params){
+		me.reelsState[params] = 'stopped'
+		console.log(me.reelsState);
+	});
+
+	this.reelSpinStart = function(reelNumber, delay){
 		setTimeout(function(){
 			fireEvent('reelSpinStart', reelNumber);
-			me[reelNumber] = 'spin';
+			me.reelsState[reelNumber] = 'spin';
 		}, delay)
 	};
 
@@ -19,63 +24,19 @@ function SpinModule (reels){
 	};
 
 	this.spinStart = function(){
-		me.ReelSpinStart(0, 50);
-		me.ReelSpinStart(1, 550);
-		me.ReelSpinStart(2, 950);
+		me.reelSpinStart(0, 50);
+		me.reelSpinStart(1, 550);
+		me.reelSpinStart(2, 950);
 		setTimeout(function(){
 			me.reelSpinStop(0, 4, 50);
 			me.reelSpinStop(1, 4, 740);
 			me.reelSpinStop(2, 5, 1250)
 		}, 3000)
 	}
-
-/*	reelsStatethis.spinStart = function(){
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 0);
-			me.reelsState[0] = 'spin';
-		} , 50);
-
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 1);
-			me.reelsState[0] = 'spin';
-		} , 550);
-
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 2);
-		} , 950);
-
-		setTimeout(function(){
-			
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 0,
-					stopSym : 4
-				});
-			} , 50);
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 1,
-					stopSym : 4
-				});
-			} , 750);
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 2,
-					stopSym : 4
-				});
-			} , 1250);
-			
-		} , 3000);
-	};
-*/
 	//TODO: make some functionality - prevent code duplication / done
 
-	this.stoppedReels = [];
 
-	this.allReelsStopped = function(){
+/*	this.allReelsStopped = function(){
 		var counter = 0;
 		for (var i = 0; i < spinModule.stoppedReels.length; i++){
 			counter = counter + 1;
@@ -85,7 +46,7 @@ function SpinModule (reels){
 			counter = 0;
 			spinModule.stoppedReels.length = 0;
 		}
-	};
+	};*/
 
 	this.update = function(){
 
