@@ -6,6 +6,13 @@ function SpinModule (reels){
 
 	addListener('reelSpinStopped', function(params){
 		me.reelsState[params] = 'stopped'
+		fireEvent('reelSpinStop', {
+			reelNumber : params+1,
+			stopSym    : 3
+		})
+		if (params == me.reelsState.length - 1){
+			fireEvent('allReelsStopped', 0);
+		}
 		console.log(me.reelsState);
 	});
 
@@ -29,24 +36,11 @@ function SpinModule (reels){
 		me.reelSpinStart(2, 950);
 		setTimeout(function(){
 			me.reelSpinStop(0, 4, 50);
-			me.reelSpinStop(1, 4, 740);
-			me.reelSpinStop(2, 5, 1250)
+			/*me.reelSpinStop(1, 4, 740);
+			me.reelSpinStop(2, 5, 1250)*/
 		}, 3000)
 	}
 	//TODO: make some functionality - prevent code duplication / done
-
-
-/*	this.allReelsStopped = function(){
-		var counter = 0;
-		for (var i = 0; i < spinModule.stoppedReels.length; i++){
-			counter = counter + 1;
-		}
-		if (counter == reels.length){
-			fireEvent('allReelsStopped', 0);
-			counter = 0;
-			spinModule.stoppedReels.length = 0;
-		}
-	};*/
 
 	this.update = function(){
 
