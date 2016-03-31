@@ -2,7 +2,7 @@ var events = {
 	spinStart 		 : [],
 	reelSpinStart    : [],
 	reelSpinStop 	 : [],
-	reelSpinStopping : [],
+	reelSpinStopped  : [],
 	allReelsStopped  : []
 };
 function addListener(event, functionCallback){
