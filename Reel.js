@@ -19,7 +19,6 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
     addListener('reelSpinStart', function (params) {
             if (params == me.reelNumber) {
                 me.state = 'moving';
-                //console.log(me.state, this.y)
             }
         }
     );
@@ -36,22 +35,20 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
                 } else {
                     me.stopY = this.symStopPositionY;
                 }
-                //console.log('reelnumber '+me.reelNumber+'  stop position' + me.stopPosition+'  stop y ' +me.stopY)
+
                 me.state = 'stopping';
 
             }
         }
     );
 
-    //addListener('reelSpinStop', function(params){
-    //		if (params == me.reelNumber){
-    //			me.state = 'stopped';
-    //			spinModule.stoppedReels.push(me.state);
-    //			spinModule.allReelsStopped();
-    //			me.step = me.stepInit;
-    //		}
-    //	}
-    //);
+    addListener('reelSpinStopped', function(params){
+    		if (params == me.reelNumber){
+    			me.state = 'stopped';
+    			me.step = me.stepInit;
+    		}
+    	}
+    );
 };
 
 Reel.prototype.init = function (mainContainer) {
@@ -89,8 +86,7 @@ Reel.prototype.update = function () {
         
         if ((this.y).toFixed(0) == this.stopY) {	// once the distanation symbol is reached,
         
-            this.state = 'stopped';			//the reel is stopped
-            this.step = this.stepInit;		//the step value is restored to initial value and th function execution stops
+            fireEvent('reelSpinStopped', this.reelNumber); //the reel is stopped and the step value is restored to initial value and th function execution stops
         
             return true;					
         }
@@ -98,13 +94,14 @@ Reel.prototype.update = function () {
             this.step = this.distToSym;		// the step value is changed to be equal to this distance, for the animation not to 'pass by'
         }
     }
-    if (this.state === 'moving') {
-        console.log(this.y, this.reelNumber)
-    }
     if (this.y + this.step < 0) { 
+
         this.y = this.y + this.step
+
     } else {
+
         this.y = -this.reelStrip.length * this.SymHeight; //initial position, number of symbols multiplied by the symbol height
+    
     }
     this.drawNewPosition();
 };
