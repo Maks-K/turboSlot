@@ -27,7 +27,7 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
 
                 me.stopPosition = params.stopSym;
                 this.firstSymStopPositionY = -(me.reelStrip.length * me.SymHeight).toFixed(0);
-    			this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight).toFixed(0);
+                this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight).toFixed(0);
 
                 //TODO - refactor / done as much as possible + comments added where needed
                 if (me.stopPosition == me.reelStrip.length) { //condition of triggering the very virst symbol on the reel
@@ -42,13 +42,8 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
         }
     );
 
-    addListener('reelSpinStopped', function(params){
-    		if (params == me.reelNumber){
-    			me.state = 'stopped';
-    			me.step = me.stepInit;
-    		}
-    	}
-    );
+
+
 };
 
 Reel.prototype.init = function (mainContainer) {
@@ -75,34 +70,41 @@ Reel.prototype.drawNewPosition = function () {
 };
 
 Reel.prototype.update = function () {
+    var distToSym = 0;
+
     if (this.state == 'stopped') {
         return true;
     }
 
-
     if (this.state == 'stopping') {
 
-    	this.distToSym = Math.abs(( this.y ).toFixed(0) - this.stopY); //finding the distance between current y and y of needed symbol
-        
-        if ((this.y).toFixed(0) == this.stopY) {	// once the distanation symbol is reached,
-        
+        distToSym = this.stopY - this.y; //finding the distance between current y and y of needed symbol
+
+        if (distToSym > 0 && distToSym < this.step) {	// once the distanation symbol is reached,
+
+            this.state = 'stopped';
+            this.y += distToSym;
+
             fireEvent('reelSpinStopped', this.reelNumber); //the reel is stopped and the step value is restored to initial value and th function execution stops
-        
-            return true;					
-        }
-        if (this.distToSym < this.step) {	// in case the distance to needed symbol is less then the initial step,
-            this.step = this.distToSym;		// the step value is changed to be equal to this distance, for the animation not to 'pass by'
+
+        } else {
+            this.y += this.step;
         }
     }
-    if (this.y + this.step < 0) { 
 
-        this.y = this.y + this.step
+    if (this.state == 'moving') {
 
-    } else {
+        this.y += this.step
+
+    }
+
+
+    if (this.y >= 0) {
 
         this.y = -this.reelStrip.length * this.SymHeight; //initial position, number of symbols multiplied by the symbol height
-    
+
     }
+
     this.drawNewPosition();
 };
  

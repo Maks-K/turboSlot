@@ -31,7 +31,7 @@ function Button(link, width, height, x, y){
 	
 	this.onSpinButtonClick = function(){
 	
-		fireEvent('spinStart', 0);
+		fireEvent('SpinButtonClick');
 				
 	};
 
