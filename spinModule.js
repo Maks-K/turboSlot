@@ -1,117 +1,98 @@
-function SpinModule (reels){
-	this.reels = reels;
+function SpinModule(reels) {
+    this.reels = reels;
+    var me = this;
 
-	this.reelsState = [ 'stopped','stopped','stopped'];
+    this.reelsState = ['stopped', 'stopped', 'stopped'];
+    this.lastResponse = {};
 
-	this.spinStart = function(){
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 0);
-			me.reelsState[0] = 'spin';
-		} , 50);
+    this.reelSpinStart = function (reelNumber, delay) {
+        setTimeout(function () {
+            fireEvent('reelSpinStart', reelNumber);
+            me.reelsState[reelNumber] = 'spin';
+        }, delay);
+    };
 
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 1);
-		} , 550);
+    this.reelSpinStop = function (reelNumber, stopSym, delay) {
+        me.reelsState[reelNumber] = 'stopping';
 
-		setTimeout(function(){
-			fireEvent('reelSpinStart', 2);
-		} , 950);
+            console.log('me.isSpinning = ' +me.isSpinning)
+            console.log('me.isStopping = ' +me.isStopping)
 
-		setTimeout(function(){
-			
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 0,
-					stopSym : 4
-				});
-			} , 50);
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 1,
-					stopSym : 4
-				});
-			} , 750);
-			
-			setTimeout(function(){
-				fireEvent('reelSpinStop', {
-					reelNumber : 2,
-					stopSym : 4
-				});
-			} , 1250);
-			
-		} , 3000);
-	};
+        fireEvent('reelSpinStop', {
+            reelNumber: reelNumber,
+            stopSym: stopSym
+        }, delay);
+    };
 
-	//TODO: make some functionality - prevent code duplication
+    this.allReelsStoppedTrigger = function(){
+        var stopsCounter = 0;
+        for (var i = 0; i < me.reelsState.length; i++){
+            if(me.reelsState[i] == 'stopped'){
+                stopsCounter++
+            };
+        }
+        if (stopsCounter == me.reelsState.length) {
+            me.isSpinning = false;
+            fireEvent('allReelsStopped');
+            stopsCounter = 0;
+        }
+    }
 
-	this.stoppedReels = [];
 
-	this.allReelsStopped = function(){
-		var counter = 0;
-		for (var i = 0; i < spinModule.stoppedReels.length; i++){
-			counter = counter + 1;
-		}
-		if (counter == reels.length){
-			fireEvent('allReelsStopped', 0);
-			counter = 0;
-			spinModule.stoppedReels.length = 0;
-		}
-	};
+    this.isSpinning = false;
+    this.isStopping = true;
 
-	this.update = function(){
+    this.spinStart = function () {
+        me.isSpinning = true;
+        me.isStopping = false;
 
-	}
+        me.reelSpinStart(0, 50);
+        me.reelSpinStart(1, 550);
+        me.reelSpinStart(2, 950);
+        setTimeout(function () {
+            if(!me.isStopping){
+                me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
+                me.isStopping = true;
+            }
+        }, 10000)
+    };
+
+    this.onReelSpinStopped = function (params) {
+        me.reelsState[params] = 'stopped';
+
+        fireEvent('reelSpinStop', {
+            reelNumber: params + 1,
+            stopSym: me.lastResponse.reelStopPos[params + 1]
+        });
+
+        //TODO make counter of 'stop's ! done in me.allReelsStoppedTrigger
+        me.allReelsStoppedTrigger();
+        console.log(me.reelsState);
+    };
+
+    this.onSpinButtonClick = function () {
+        //console.log('Before is spinning ='+me.isSpinning+'\n'+'is stopping =' +me.isStopping);
+        if (!me.isSpinning){
+            fireEvent('ServerRequest', {action : 'spin'});
+            me.spinStart();
+            me.isSpinning = true;
+            //console.log('me.isSpinning = ' +me.isSpinning+' the spin is starting')
+        }else if(!me.isStopping && me.reelsState[0] == 'spin'){
+            me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
+            me.isStopping = true;
+            //console.log('me.isStopping = ' +me.isStopping)
+        }
+        //console.log('After is spinning ='+me.isSpinning+'\n'+'is stopping =' +me.isStopping);
+    };
+
+    this.onServerResponse = function (response) {
+          me.lastResponse = response;
+    };
+
+    addListener('reelSpinStopped', me.onReelSpinStopped);
+
+    addListener ('SpinButtonClick', me.onSpinButtonClick);
+
+    addListener ('ServerResponse', me.onServerResponse);
 }
 
-
-
-
-
-
-/*var spinModule = {
-			   spinStart : function(){
-							setTimeout(function(){
-								fireEvent('reelSpinStart', 0);
-							} , 50);
-
-							setTimeout(function(){
-								fireEvent('reelSpinStart', 1);
-							} , 550);
-
-							setTimeout(function(){
-								fireEvent('reelSpinStart', 2);
-							} , 950);
-
-							setTimeout(function(){
-								
-								
-								setTimeout(function(){
-									fireEvent('reelSpinStopping', 0);
-								} , 50);
-								
-								setTimeout(function(){
-									fireEvent('reelSpinStopping', 1);
-								} , 750);
-								
-								setTimeout(function(){
-									fireEvent('reelSpinStopping', 2);
-								} , 1250);
-								
-							} , 1000);
-						},
-	   stoppedReels : [],
-	allReelsStopped : function(){
-							var counter = 0;
-							for (var i = 0; i < spinModule.stoppedReels.length; i++){
-								counter = counter + 1;
-							}
-							if (counter == reels.length){
-								fireEvent('allReelsStopped', 0);
-								counter = 0;
-								spinModule.stoppedReels.length = 0;
-							}
-						}
-};
-*/
