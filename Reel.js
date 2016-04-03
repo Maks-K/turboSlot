@@ -9,7 +9,6 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
     this.step = 50;
     this.stepInit = 50;
     this.stopY = 0;
-
     this.reelNumber = reelNumber;
     this.state = 'stopped';
 
@@ -23,16 +22,18 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
             }
         }
     );
-
     addListener('reelSpinStop', function (params) {
             if (params.reelNumber == me.reelNumber) {
 
                 me.stopPosition = params.stopSym;
-                //TODO - refactor
-                if (me.stopPosition == me.reelStrip.length) {
-                    me.stopY = -(me.reelStrip.length * me.SymHeight).toFixed(0)
+                this.firstSymStopPositionY = -(me.reelStrip.length * me.SymHeight).toFixed(0);
+                this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight).toFixed(0);
+
+                //TODO - refactor / done as much as possible + comments added where needed
+                if (me.stopPosition == me.reelStrip.length) { //condition of triggering the very virst symbol on the reel
+                    me.stopY = this.firstSymStopPositionY;
                 } else {
-                    me.stopY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight).toFixed(0);
+                    me.stopY = this.symStopPositionY;
                 }
 
                 me.state = 'stopping';
@@ -41,25 +42,16 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
         }
     );
 
-    //addListener('reelSpinStop', function(params){
-    //		if (params == me.reelNumber){
-    //			me.state = 'stopped';
-    //			spinModule.stoppedReels.push(me.state);
-    //			spinModule.allReelsStopped();
-    //			me.step = me.stepInit;
-    //		}
-    //	}
-    //);
+
+
 };
 
 Reel.prototype.init = function (mainContainer) {
     console.log(this.stopPosition);
     var rootContainer = new PIXI.Container(),
-        reelSetFake,
-        reelSetReal = new ReelSet(0, this.reelStrip, this.width, this.SymHeight);
+        reelSetReal = new ReelSet(0, this.reelStrip, this.width, this.SymHeight),
+        reelSetFake = new ReelSet(-this.y, this.reelStrip, this.width, this.SymHeight);
     reelSetReal.init(rootContainer);
-
-    reelSetFake = new ReelSet(-this.y, this.reelStrip, this.width, this.SymHeight);
     reelSetFake.init(rootContainer);
 
     rootContainer.position.x = this.x;
@@ -78,30 +70,41 @@ Reel.prototype.drawNewPosition = function () {
 };
 
 Reel.prototype.update = function () {
+    var distToSym = 0;
+
     if (this.state == 'stopped') {
         return true;
     }
 
-
     if (this.state == 'stopping') {
 
+        distToSym = this.stopY - this.y; //finding the distance between current y and y of needed symbol
 
-        //this.distToSym = Math.abs(( this.y ).toFixed(0) - this.stopY);
-        //if ((this.y).toFixed(0) == this.stopY) {
-        //
-        //    fireEvent('reelSpinStopped', this.reelNumber);
-        //
-        //    return true;
-        //}
-        //if (this.distToSym < this.step) {
-        //    this.step = this.distToSym;
-        //}
+        if (distToSym > 0 && distToSym < this.step) {	// once the distanation symbol is reached,
+
+            this.state = 'stopped';
+            this.y += distToSym;
+
+            fireEvent('reelSpinStopped', this.reelNumber); //the reel is stopped and the step value is restored to initial value and th function execution stops
+
+        } else {
+            this.y += this.step;
+        }
     }
 
-    if (this.y + this.step < 0) {
-        this.y = this.y + this.step
-    } else {
-        this.y = -this.reelStrip.length * this.SymHeight;
+    if (this.state == 'moving') {
+
+        this.y += this.step
+
     }
+
+
+    if (this.y >= 0) {
+
+        this.y = -this.reelStrip.length * this.SymHeight; //initial position, number of symbols multiplied by the symbol height
+
+    }
+
     this.drawNewPosition();
 };
+ 
