@@ -13,6 +13,7 @@ function Button(link, width, height, x, y){
 			texture = new PIXI.Sprite.fromImage( me.link );
 		rootContainer.position.x = me.x;
 		rootContainer.position.y = me.y;
+		//rootContainer.visible = false;
 		
 		texture.interactive = true;
 		texture.on('mousedown', me.onSpinButtonClick);
@@ -28,14 +29,37 @@ function Button(link, width, height, x, y){
 		this.rootContainer = rootContainer;
 		this.texture = texture;
 	};
+
+	this.onQuickStopped = function(){
+
+		me.texture.interactive = false;
+		me.rootContainer.visible = false;
+
+	};
 	
-	this.onSpinButtonClick = function(){
-	
-		fireEvent('SpinButtonClick');
-				
+	this.onAllReelsStopped = function(){
+
+		me.texture.interactive = true;
+		me.rootContainer.visible = true;
+
 	};
 
-	this.update = function(){};
+	this.onSpinButtonClick = function(){
+
+		if(me.texture.interactive){
+
+			fireEvent('SpinButtonClick');
+
+		};
+
+	};
+
+	this.update = function(){
+		
+	};
+
+	addListener('quickStopped', me.onQuickStopped);
+	addListener('allReelsStopped', me.onAllReelsStopped);
 
 };
 
