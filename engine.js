@@ -4,8 +4,11 @@ document.body.appendChild( renderer.view );
 
 var background = new Background('resources/bg.png', 960, 536, 0, 0)
 background.init(stage);
+var buttonNotActive = new ButtonNotActive('resources/BTN_Spin_d.png', 115, 115, 873, 268)
+buttonNotActive.init(stage);
 var button = new Button('resources/BTN_Spin.png', 115, 115, 873, 268)
 button.init(stage);
+
 
 
 var elements = [];
