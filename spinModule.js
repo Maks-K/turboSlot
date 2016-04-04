@@ -5,84 +5,86 @@ function SpinModule(reels) {
     this.reelsState = ['stopped', 'stopped', 'stopped'];
     this.lastResponse = {};
 
-    this.reelSpinStart = function (reelNumber, delay) {
-        setTimeout(function () {
+    this.stopTimerId = 0;
+
+    this.reelSpinStart = function (reelNumber) {
             fireEvent('reelSpinStart', reelNumber);
             me.reelsState[reelNumber] = 'spin';
-        }, delay);
     };
 
-    this.reelSpinStop = function (reelNumber, stopSym, delay) {
-        me.reelsState[reelNumber] = 'stopping';
+    this.reelSpinStop = function (reelNumber, stopSym) {
 
-            console.log('me.isSpinning = ' +me.isSpinning)
-            console.log('me.isStopping = ' +me.isStopping)
+        me.reelsState[reelNumber] = 'stopping';
 
         fireEvent('reelSpinStop', {
             reelNumber: reelNumber,
             stopSym: stopSym
-        }, delay);
+        });
     };
 
-    this.allReelsStoppedTrigger = function(){
+    this.checkAllReelsState = function(state){
         var stopsCounter = 0;
         for (var i = 0; i < me.reelsState.length; i++){
-            if(me.reelsState[i] == 'stopped'){
-                stopsCounter++
-            };
-        }
-        if (stopsCounter == me.reelsState.length) {
-            me.isSpinning = false;
-            fireEvent('allReelsStopped');
-            stopsCounter = 0;
-        }
-    }
-
-
-    this.isSpinning = false;
-    this.isStopping = true;
-
-    this.spinStart = function () {
-        me.isSpinning = true;
-        me.isStopping = false;
-
-        me.reelSpinStart(0, 50);
-        me.reelSpinStart(1, 550);
-        me.reelSpinStart(2, 950);
-        setTimeout(function () {
-            if(!me.isStopping){
-                me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
-                me.isStopping = true;
+            if(me.reelsState[i] == state){
+                stopsCounter++;
             }
-        }, 10000)
+        }
+
+        return stopsCounter == me.reelsState.length;
+
     };
 
-    this.onReelSpinStopped = function (params) {
-        me.reelsState[params] = 'stopped';
 
-        fireEvent('reelSpinStop', {
-            reelNumber: params + 1,
-            stopSym: me.lastResponse.reelStopPos[params + 1]
-        });
+    this.isQuickStop = false;
+    //this.isStopping = true;
 
-        //TODO make counter of 'stop's ! done in me.allReelsStoppedTrigger
-        me.allReelsStoppedTrigger();
+    this.spinStart = function () {
+
+
+        me.reelSpinStart(0);
+        me.reelSpinStart(1);
+        me.reelSpinStart(2);
+        me.stopTimerId = setTimeout(function () {
+            console.log('setTimeout STOP');
+            if(!me.isQuickStop){
+                me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
+            //    me.isStopping = true;
+            }
+        }, 10000);
+    };
+
+    this.onReelSpinStopped = function (reelNum) {
+        me.reelsState[reelNum] = 'stopped';
+
+        if(me.checkAllReelsState('stopped')){
+            fireEvent('allReelsStopped');
+        } else {
+
+            fireEvent('reelSpinStop', {
+                reelNumber: reelNum + 1,
+                stopSym: me.lastResponse.reelStopPos[reelNum + 1]
+            });
+
+        }
+
         console.log(me.reelsState);
     };
 
     this.onSpinButtonClick = function () {
-        //console.log('Before is spinning ='+me.isSpinning+'\n'+'is stopping =' +me.isStopping);
-        if (!me.isSpinning){
+        if (me.checkAllReelsState('stopped')){
+            me.isQuickStop = false;
             fireEvent('ServerRequest', {action : 'spin'});
+
             me.spinStart();
-            me.isSpinning = true;
-            //console.log('me.isSpinning = ' +me.isSpinning+' the spin is starting')
-        }else if(!me.isStopping && me.reelsState[0] == 'spin'){
-            me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
-            me.isStopping = true;
-            //console.log('me.isStopping = ' +me.isStopping)
+        } else {
+
+            if (me.reelsState[0] == 'spin'){
+                clearTimeout(me.stopTimerId);
+                me.isQuickStop = true;
+                me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
+            }
+
         }
-        //console.log('After is spinning ='+me.isSpinning+'\n'+'is stopping =' +me.isStopping);
     };
 
     this.onServerResponse = function (response) {
@@ -94,5 +96,6 @@ function SpinModule(reels) {
     addListener ('SpinButtonClick', me.onSpinButtonClick);
 
     addListener ('ServerResponse', me.onServerResponse);
+
 }
 
