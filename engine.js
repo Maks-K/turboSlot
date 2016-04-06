@@ -1,8 +1,10 @@
-var renderer = PIXI.autoDetectRenderer( 960, 536 ),
+var screenWidth = 960,
+	screenHeight = 536;
+var renderer = PIXI.autoDetectRenderer( screenWidth, screenHeight ),
 	stage = new PIXI.Container();
 document.body.appendChild( renderer.view );
 
-var background = new Background('resources/bg.png', 960, 536, 0, 0)
+var background = new Background('resources/bg.png', screenWidth, screenHeight, 0, 0)
 background.init(stage);
 var button = new Button('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 115, 115, 873, 268)
 button.init(stage);
@@ -18,9 +20,10 @@ for ( var j = 0; j < reels.length; j++ ){
 };
 
 
-var spinModule = new SpinModule(reels),
-    server = new Server(),
- 	winModule = new WinModule(205, 165);
+var spinModule = new SpinModule(reels);
+var server = new Server();
+
+var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
 animate();
