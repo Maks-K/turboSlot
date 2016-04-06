@@ -16,6 +16,11 @@ function Server (){
             reelStopPos : [4,5,6],
             win : 5000,
             winType : 'bigWin'
+        },
+        {
+            reelStopPos : [5,6,7],
+            win : 0,
+            winType : 'noWin'
         }
     ];
     var stopQueueCounter = 0;
