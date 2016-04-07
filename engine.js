@@ -6,8 +6,10 @@ document.body.appendChild( renderer.view );
 
 var background = new Background('resources/bg.png', screenWidth, screenHeight, 0, 0)
 background.init(stage);
-var button = new Button('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 115, 115, 873, 268)
-button.init(stage);
+var spinButtonModule = new SpinButtonModule();
+spinButtonModule.init(stage);
+var button1 = new Button('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 115, 115, 273, 268, 'anotherButton')
+button1.init(stage);
 
 
 var elements = [];
