@@ -1,4 +1,4 @@
-function Button(link1, link2, width, height, x, y){
+function Button(link1, link2, width, height, x, y, buttonType){
 	var me = this;
 	this.rootContainer = null;
 	this.texture = null;
@@ -9,6 +9,8 @@ function Button(link1, link2, width, height, x, y){
 	this.height = height;
 	this.x = x;
 	this.y = y;
+	this.buttonType = buttonType;
+	this.state = 'up';
 
 	this.init = function(mainContainer){
 		var rootContainer = new PIXI.Container(),
@@ -19,7 +21,10 @@ function Button(link1, link2, width, height, x, y){
 		
 		texture.interactive = true;
 		texture.visible = true;
-		texture.on('mousedown', me.onSpinButtonClick);
+		texture.on('mousedown', me.onButtonClick);
+		texture.on('mouseover', me.onButtonHover);
+		texture.on('mouseout', me.onButtonUnHover); // reverts mouseover
+
 
 		texture.height = me.height;
         texture.width = me.width;
@@ -40,38 +45,57 @@ function Button(link1, link2, width, height, x, y){
 		this.textureNotActive = textureNotActive;
 	};
 
-	this.onQuickStopped = function(){
 
-		me.texture.interactive = false;
-		me.texture.visible = false;
-		me.textureNotActive.visible = true;
+	this.onButtonClick = function(){
 
-	};
-	
-	this.onAllReelsStopped = function(){
-
-		me.texture.interactive = true;
-		me.texture.visible = true;
-		me.textureNotActive.visible = false;
+			fireEvent(me.buttonType+'Click');
 
 	};
 
-	this.onSpinButtonClick = function(){
+	this.update = function(){};
 
-		if(me.texture.interactive){
+	this.setState = function (newState) {
 
-			fireEvent('SpinButtonClick');
-
-		};
+		me.state = newState;
 
 	};
 
-	this.update = function(){
-		
+	me.onStateChange = function(buttonType){
+		if(me.buttonType == buttonType){
+			if(me.state == 'disabled'){
+				me.texture.interactive = false;
+				me.texture.visible = false;
+				me.textureNotActive.visible = true;
+			} 
+			if(me.state == 'up'){
+				me.texture.interactive = true;
+				me.texture.visible = true;
+				me.textureNotActive.visible = false;
+			}
+			if(me.state == 'hovered'){
+				me.texture.alpha = 0.7;
+			}
+			if(me.state == 'unHovered'){
+				me.texture.alpha = 1;
+			}
+		}
+	}
+
+	this.onButtonHover = function(){
+
+		me.setState('hovered');
+		fireEvent('buttonStateChange', me.buttonType);
+
 	};
 
-	addListener('quickStopped', me.onQuickStopped);
-	addListener('allReelsStopped', me.onAllReelsStopped);
+	this.onButtonUnHover = function(){
+
+		me.setState('unHovered');
+		fireEvent('buttonStateChange', me.buttonType);
+
+	};
+
+	addListener('buttonStateChange', me.onStateChange);
 
 };
 
