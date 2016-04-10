@@ -47,7 +47,6 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
 };
 
 Reel.prototype.init = function (mainContainer) {
-    console.log(this.stopPosition);
     var rootContainer = new PIXI.Container(),
         reelSetReal = new ReelSet(0, this.reelStrip, this.width, this.SymHeight),
         reelSetFake = new ReelSet(-this.y, this.reelStrip, this.width, this.SymHeight);
@@ -79,9 +78,6 @@ Reel.prototype.update = function () {
     if (this.state == 'stopping') {
 
         distToSym = this.stopY - this.y; //finding the distance between current y and y of needed symbol
-        if (this.reelNumber == 0 /*&& distToSym > - 50*/){
-            console.log(this.stopY, this.y, this.step, distToSym);
-        };
         if (distToSym >= 0 && distToSym < this.step) {	// once the distanation symbol is reached,
 
             this.state = 'stopped';

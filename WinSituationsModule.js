@@ -37,7 +37,7 @@ function WinSituationsModule(){
 
     };
 
-    me.betIndicatorHovered = function(buttonType){
+    me.betIndicatorHovered = function(buttonType){     // highlights the selected betline
         for (var i = 0; i < me.betlinesIndicators.length; i++){
             if(me.betlinesIndicators[i].buttonType == buttonType){
                 me.betlines[i].show();
@@ -45,7 +45,7 @@ function WinSituationsModule(){
         }
     };
 
-    me.betIndicatorUnHovered = function(buttonType){
+    me.betIndicatorUnHovered = function(buttonType){     // hides the selected betline
         for (var i = 0; i < me.betlinesIndicators.length; i++){
             if(me.betlinesIndicators[i].buttonType == buttonType){
                 me.betlines[i].hide();
@@ -57,14 +57,14 @@ function WinSituationsModule(){
         me.latestResponse = response;
     };
 
-    me.onAllReelsStopped = function(){
+    me.onAllReelsStopped = function(){    // shows winning betlines depending on the win outcome
         for(var i = 0; i < me.latestResponse.winBetlines.length; i++){
             if(me.latestResponse.winBetlines[i]){
                 me.betlines[i].show();
             }
         }
     };
-    me.onReelSpinStart = function(){
+    me.onReelSpinStart = function(){    // hides all the betlines when the new spin starts
         for(var i = 0; i < me.betlines.length; i++){
             me.betlines[i].hide();
         };
