@@ -8,9 +8,6 @@ function WinSituationsModule(){
     this.betline1Indicator = null;
     this.betline2Indicator = null;
     this.betline3Indicator = null;
-    this.betline1Num = null;
-    this.betline2Num = null;
-    this.betline3Num = null;
 
     this.latestResponse = {};
 
@@ -37,11 +34,6 @@ function WinSituationsModule(){
         me.betline3Indicator = betline3Indicator;
         me.betlines.push(betline1, betline2, betline3);
         me.betlinesIndicators.push(betline1Indicator, betline2Indicator, betline3Indicator);
-
-
-        this.onMouseClickCallback = function(){
-            console.log('test');
-        };
 
     };
 
