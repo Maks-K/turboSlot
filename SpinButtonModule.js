@@ -12,18 +12,20 @@ function SpinButtonModule(){
 		};
 
 		me.spinButton = spinButton;
-	}
+	};
 
 	this.onSpinButtonClick = function () {
 		fireEvent('spinButtonClick');
 	};
 
 	this.onQuickStopped = function(){
-		me.spinButton.setState('disabled');
+		me.spinButton.enabled = false;
 	};
 	
 	this.onAllReelsStopped = function(){
 		me.spinButton.setState('up');
+		me.spinButton.enabled = true;
+		me.spinButton.setEnabledState();
 	};
 
 	addListener('quickStopped', me.onQuickStopped);

@@ -9,14 +9,14 @@ function addListener(eventName, functionCallback){
 }
 
 function fireEvent(event, params){
-	console.error(event, params);
+	//console.error(event, params);
 
-	for(var i = 0; i < events[event].length; i++){
-		events[event][i](params);
+	if(events[event]){
+		for(var i = 0; i < events[event].length; i++){
+			events[event][i](params);
+		}
 	}
 }
-
-
 
 
 

@@ -1,8 +1,8 @@
 function WinModule (x, y){
 	var me = this;
 
-	this.rootContainer = null
-;	this.smallWinPresentation = null;
+	this.rootContainer = null;
+	this.smallWinPresentation = null;
 	this.mediumWinPresentation = null;
 	this.bigWinPresentation = null;
 	this.winPresentationText = null;
@@ -45,14 +45,14 @@ function WinModule (x, y){
 		winPresentationText.anchor.y = 0.5;
 
 		rootContainer.addChild(smallWinPresentation, mediumWinPresentation, bigWinPresentation, winPresentationText);
-		mainContainer.addChild(rootContainer)
+		mainContainer.addChild(rootContainer);
 
 		me.rootContainer = rootContainer;
 		me.smallWinPresentation = smallWinPresentation;
 		me.mediumWinPresentation = mediumWinPresentation;
 		me.bigWinPresentation = bigWinPresentation;
 		me.winPresentationText = winPresentationText;
-	}
+	};
 
 	this.onServerResponse = function(response){
 		me.latestResponse = response

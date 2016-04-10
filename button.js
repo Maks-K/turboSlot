@@ -44,47 +44,50 @@ function Button(link1, link2, width, height, x, y, buttonType) {
 
 
     this.onButtonDown = function () {
-        me.setState('down');//fireevent for sounds for sounds (for all states)
-
+        me.setState('down');//fireEvent for sounds (for all states)
         me.texture.scale.set(1.1);
     };
 
     this.onButtonUp = function () {
-        me.setState('up');
-
-        me.texture.visible = true;
-        me.textureNotActive.visible = false;
-
-        me.texture.scale.set(1);
-
-        me.onMouseClickCallback();
+        if(me.enabled){
+            me.setState('up');
+            me.texture.scale.set(1);
+            me.setEnabledState();
+            me.onMouseClickCallback();
+        }
+        if (!me.enabled){
+            console.log('condition works');
+            me.texture.visible = false;
+            me.textureNotActive.visible = true;
+        };
     };
 
     this.onButtonHover = function () {
-        me.setState('hover');
-
-        me.texture.alpha = 0.7;
-
+        if(me.enabled){
+            me.setState('hover');
+            me.texture.alpha = 0.7;
+            fireEvent('buttonHovered', me.buttonType);
+        }
     };
 
     this.onButtonUnHover = function () {
-        me.setState('up');
-
-        me.texture.alpha = 1;
-        me.texture.scale.set(1);
-
+        if(me.enabled){
+            me.setState('up');
+            me.texture.alpha = 1;
+            me.texture.scale.set(1);
+            fireEvent('buttonUnHovered', me.buttonType);
+        }
     };
 
     this.onMouseClickCallback = function(){};
 
-
-    this.update = function () {
+    this.setEnabledState = function(){
+        me.texture.visible = true;
+        me.textureNotActive.visible = false;
     };
 
     this.setState = function (newState) {
-
         me.state = newState;
-
     };
 
 

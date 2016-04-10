@@ -3,11 +3,11 @@ var firstReel = {
 	xOffset : 70
 },
 	secondReel = {
-	reelSet : ['SYM1', 'SYM2', 'SYM5', 'SYM4', 'SYM1', 'SYM6', 'SYM5', 'SYM4',],
+	reelSet : ['SYM1', 'SYM6', 'SYM2', 'SYM4', 'SYM1', 'SYM6', 'SYM5', 'SYM4'],
 	xOffset : 82+230
 },
 	thirdReel = {
-	reelSet : ['SYM1', 'SYM5', 'SYM4', 'SYM3', 'SYM2', 'SYM1', 'SYM3', 'SYM4', 'SYM5'],
+	reelSet : ['SYM1', 'SYM6', 'SYM2', 'SYM3', 'SYM2', 'SYM1', 'SYM3', 'SYM4', 'SYM5'],
 	xOffset : 324+230
 },
 	fourthReel = {

@@ -69,19 +69,21 @@ function SpinModule(reels) {
 
         console.log(me.reelsState);
     };
-
+    this.nextAction = 'spinStart';
     this.onSpinButtonClick = function () {
         if (me.checkAllReelsState('stopped')){
             me.isQuickStop = false;
             fireEvent('ServerRequest', {action : 'spin'});
-
             me.spinStart();
+            me.nextAction = 'quickStop';
         } else {
 
             if (me.reelsState[0] == 'spin'){
                 clearTimeout(me.stopTimerId);
                 me.isQuickStop = true;
                 me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
+                fireEvent('quickStopped');
+                me.nextAction = 'spinStart';
             }
 
         }
@@ -93,7 +95,7 @@ function SpinModule(reels) {
 
     addListener('reelSpinStopped', me.onReelSpinStopped);
 
-    addListener ('SpinButtonClick', me.onSpinButtonClick);
+    addListener ('spinButtonClick', me.onSpinButtonClick);
 
     addListener ('ServerResponse', me.onServerResponse);
 

@@ -3,24 +3,28 @@ function Server (){
 
     var stopQueue = [
         {
-            reelStopPos : [1,2,3],
+            reelStopPos : [4,6,7],
             win : 200,
-            winType : 'smallWin'
+            winType : 'smallWin',
+            winBetlines : [1]
         },
         {
-            reelStopPos : [2,3,4],
+            reelStopPos : [5,7,8],
             win : 300,
-            winType : 'mediumWin'
+            winType : 'mediumWin',
+            winBetlines : [1, 3]
         },
         {
-            reelStopPos : [4,5,6],
+            reelStopPos : [0,0,0],
             win : 5000,
-            winType : 'bigWin'
+            winType : 'bigWin',
+            winBetlines : [1, 2, 3]
         },
         {
             reelStopPos : [5,6,7],
             win : 0,
-            winType : 'noWin'
+            winType : 'noWin',
+            winBetlines : []
         }
     ];
     var stopQueueCounter = 0;

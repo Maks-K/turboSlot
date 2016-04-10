@@ -1,24 +1,28 @@
 var allReelsStopSound = new Audio('resources/allReelsStopSound.mp3'),
 	reelStopSound = new Audio('resources/reelStopSound.mp3'),
 	spinStart = new Audio('resources/spinStart.mp3'),
-	buttonHoverSound = new Audio('resources/hover.mp3');
+	buttonHoverSound = new Audio('resources/hover.mp3'),
+	quickStopSound = new Audio('resources/quickStop.mp3');
 
 
 addListener ('spinButtonClick', function(params){
-		spinStart.play();
+		if(spinModule.nextAction == 'spinStart'){
+			spinStart.play();
+		}else if(spinModule.nextAction == 'quickStop'){
+			quickStopSound.play();
+		}
 	}
 );
 
-addListener ('buttonStateChange', function(params){
-		//if(params.newState == 'hovered'){
-			var buttonHoverSoundClone = buttonHoverSound.cloneNode()
-			buttonHoverSoundClone.play();
-		//}
+addListener ('buttonHovered', function(params) {
+		var buttonHoverSoundClone = buttonHoverSound.cloneNode();
+		buttonHoverSoundClone.play();
 	}
 );
 
 addListener ( 'allReelsStopped', function( params ){
-		allReelsStopSound.play();
+	var allReelsStopSoundClone = allReelsStopSound.cloneNode();
+	allReelsStopSoundClone.play();
 	}
 );
 

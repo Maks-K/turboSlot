@@ -26,11 +26,11 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
             if (params.reelNumber == me.reelNumber) {
 
                 me.stopPosition = params.stopSym;
-                this.firstSymStopPositionY = -(me.reelStrip.length * me.SymHeight).toFixed(0);
-                this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight).toFixed(0);
+                this.firstSymStopPositionY = -(me.reelStrip.length * me.SymHeight)//.toFixed(0);
+                this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight)//.toFixed(0);
 
                 //TODO - refactor / done as much as possible + comments added where needed
-                if (me.stopPosition == me.reelStrip.length) { //condition of triggering the very virst symbol on the reel
+                if (me.stopPosition == me.reelStrip.length) { //condition of triggering the very first symbol on the reel
                     me.stopY = this.firstSymStopPositionY;
                 } else {
                     me.stopY = this.symStopPositionY;
@@ -79,8 +79,10 @@ Reel.prototype.update = function () {
     if (this.state == 'stopping') {
 
         distToSym = this.stopY - this.y; //finding the distance between current y and y of needed symbol
-
-        if (distToSym > 0 && distToSym < this.step) {	// once the distanation symbol is reached,
+        if (this.reelNumber == 0 /*&& distToSym > - 50*/){
+            console.log(this.stopY, this.y, this.step, distToSym);
+        };
+        if (distToSym >= 0 && distToSym < this.step) {	// once the distanation symbol is reached,
 
             this.state = 'stopped';
             this.y += distToSym;
@@ -104,7 +106,6 @@ Reel.prototype.update = function () {
         this.y = -this.reelStrip.length * this.SymHeight; //initial position, number of symbols multiplied by the symbol height
 
     }
-
     this.drawNewPosition();
 };
  
