@@ -11,7 +11,7 @@ function WinSituationsModule(){
 
     this.latestResponse = {};
 
-    this.init = function(mainContainer){
+    this.init = function(mainContainer){/*
         var betline1 = new Betline(45,90,'resources/Bet_Line.png'),
             betline2 = new Betline(45,270,'resources/Bet_Line.png'),
             betline3 = new Betline(45,450,'resources/Bet_Line.png'),
@@ -33,14 +33,14 @@ function WinSituationsModule(){
         me.betline2Indicator = betline2Indicator;
         me.betline3Indicator = betline3Indicator;
         me.betlines.push(betline1, betline2, betline3);
-        me.betlinesIndicators.push(betline1Indicator, betline2Indicator, betline3Indicator);
+        me.betlinesIndicators.push(betline1Indicator, betline2Indicator, betline3Indicator);*/
 
     };
 
-    me.betIndicatorHovered = function(buttonType){     // highlights the selected betline
+/*    me.betIndicatorHovered = function(buttonType){     // highlights the selected betline
         for (var i = 0; i < me.betlinesIndicators.length; i++){
             if(me.betlinesIndicators[i].buttonType == buttonType){
-                me.betlines[i].show();//fire event "show betline"
+                fireEvent('showBetline', 1);;//fire event "show betline"
             }
         }
     };
@@ -51,7 +51,7 @@ function WinSituationsModule(){
                 me.betlines[i].hide(); // hide (event)
             }
         }
-    };
+    };*/
 
     me.onServerResponse = function(response){
         me.latestResponse = response;
@@ -60,13 +60,14 @@ function WinSituationsModule(){
     me.onAllReelsStopped = function(){    // shows winning betlines depending on the win outcome
         for(var i = 0; i < me.latestResponse.winBetlines.length; i++){
             if(me.latestResponse.winBetlines[i]){
-                me.betlines[i].show(); // --//--
+                console.log(me.latestResponse.winBetlines[i])// --//--
+                fireEvent('showBetline', me.latestResponse.winBetlines[i]);
             }
         }
     };
     me.onReelSpinStart = function(){    // hides all the betlines when the new spin starts
         for(var i = 0; i < me.betlines.length; i++){
-            me.betlines[i].hide(); //--//--
+            fireEvent('hideBetline', [i]); //--//--
         };
     };
 

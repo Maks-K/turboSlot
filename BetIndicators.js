@@ -1,4 +1,4 @@
-function BetIndicators (link1, link2, width, height, x, y, text){
+function BetIndicators (link1, link2, width, height, x, y){
     var me = this;
     this.rootContainer = null;
     this.texture = null;
@@ -14,10 +14,14 @@ function BetIndicators (link1, link2, width, height, x, y, text){
 
 }
 
-BetIndicator.prototype.init = function(mainContainer){
+BetIndicators.prototype.init = function(mainContainer){
     var rootContainer = new PIXI.Container(),
         betline1IndicatorButton = new Button(this.link1, this.link1, this.width, this.height, this.x, this.y, 'betlineIndicator'), //create many buttons and texts her
-        textOnButton = new PIXI.Text(this.text);
+        betline2IndicatorButton = new Button(this.link1, this.link1, this.width, this.height, this.x, this.y, 'betlineIndicator'), //create many buttons and texts her
+        betline3IndicatorButton = new Button(this.link1, this.link1, this.width, this.height, this.x, this.y, 'betlineIndicator'), //create many buttons and texts her
+        textOnButton1 = new PIXI.Text(this.text),
+        textOnButton2 = new PIXI.Text(this.text),
+        textOnButton3 = new PIXI.Text(this.text);
 
     rootContainer.position.x = this.x;
     rootContainer.position.y = this.y;
@@ -28,24 +32,16 @@ BetIndicator.prototype.init = function(mainContainer){
     textOnButton.anchor.y = 0.5;
 
     betline1IndicatorButton.onMouseHoverCallback = function(){  // do the same for all the buttons with for
-        fireEvent('showBetline', 1);
+        //fireEvent('showBetline', 1);
     };
 
 
     betline1IndicatorButton.onMouseUnHoverCallback = function(){
-        fireEvent('hideBetline', 1);
+        //fireEvent('hideBetline', 1);
     };
 
-    rootContainer.addChild(button, textOnButton);
+    rootContainer.addChild(betline1IndicatorButton, betline2IndicatorButton, betline3IndicatorButton);
     mainContainer.addChild(rootContainer);
-
-}
-/*
-
-BetIndicator.prototype.onHover = function(params){
 
 };
 
-BetIndicator.prototype.onUnHover = function(params){
-
-};*/

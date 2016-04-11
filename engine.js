@@ -24,7 +24,8 @@ for ( var j = 0; j < CONFIG.reels.length; j++ ){
 
 var spinModule = new SpinModule(CONFIG.reels);
 var server = new Server();
-var betlines = new Betlines(CONFIG.betlines);
+var betlines = new Betlines(CONFIG.betlines, 'resources/Bet_Line.png');
+betlines.init(stage);
 var betlineIndicators = new Betlines(CONFIG.betlineIndicators);
 
 var winSituationsModule = new WinSituationsModule();
