@@ -1,17 +1,27 @@
-function Betline(x, y, link, betlineNumber){
+function Betlines( betlinesConfig,link){
     var me = this;
     this.rootContainer = null;
-    this.betlineTexture = null;
-    this.x = x;
-    this.y = y;
+    this.betlines = [];
     this.link = link;
-    this.betlineNumber = betlineNumber;
+
+    this.onShowBetline = function(betlineNum){
+        me.betlines[betlineNum].visible=true;
+    };
+
+    this.onShowBetline = function(betlineNum){
+        me.betlines[betlineNum].visible=true;
+    };
+
+
+    addListener('showBetline', me.onShowBetline);
+    addListener('showBetline', me.onShowBetline)
+
 
 
 }
-Betline.prototype.init = function ( mainContainer ) {
+Betlines.prototype.init = function ( mainContainer ) {
     var rootContainer = new PIXI.Container(),
-        betlineTexture = new PIXI.Sprite.fromImage(this.link);
+        betlineTexture = new PIXI.Sprite.fromImage(this.link); //create many texture here
 
     rootContainer.position.x = this.x;
     rootContainer.position.y = this.y;
@@ -25,11 +35,4 @@ Betline.prototype.init = function ( mainContainer ) {
 
 };
 
-Betline.prototype.show = function(){
-    this.rootContainer.visible = true;
-};
-
-Betline.prototype.hide = function(){
-    this.rootContainer.visible = false;
-}
 

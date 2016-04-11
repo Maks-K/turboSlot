@@ -14,16 +14,18 @@ button1.init(stage);*/
 
 var elements = [];
 var toUpdate = [];
-for ( var j = 0; j < reels.length; j++ ){
-	var reel = new Reel( j, reels[j].reelSet, reels[j].xOffset);
+for ( var j = 0; j < CONFIG.reels.length; j++ ){
+	var reel = new Reel( j, CONFIG.reels[j].reelSet, CONFIG.reels[j].xOffset);
 	reel.init( stage );
 	elements.push( reel );
 	toUpdate.push( reel );
 };
 
 
-var spinModule = new SpinModule(reels);
+var spinModule = new SpinModule(CONFIG.reels);
 var server = new Server();
+var betlines = new Betlines(CONFIG.betlines);
+var betlineIndicators = new Betlines(CONFIG.betlineIndicators);
 
 var winSituationsModule = new WinSituationsModule();
 winSituationsModule.init(stage);

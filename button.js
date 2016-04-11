@@ -66,7 +66,8 @@ function Button(link1, link2, width, height, x, y, buttonType) {
         if(me.enabled){
             me.setState('hover');
             me.texture.alpha = 0.7;
-            fireEvent('buttonHovered', me.buttonType);
+            //fireEvent('buttonHovered', me.buttonType);
+            me.onMouseHoverCallback();
         }
     };
 
@@ -75,9 +76,13 @@ function Button(link1, link2, width, height, x, y, buttonType) {
             me.setState('up');
             me.texture.alpha = 1;
             me.texture.scale.set(1);
-            fireEvent('buttonUnHovered', me.buttonType);
+            //fireEvent('buttonUnHovered', me.buttonType);
+            me.onMouseUnHoverCallback();
         }
     };
+
+    this.onMouseHoverCallback = function(){};
+    this.onMouseUnHoverCallback = function(){};
 
     this.onMouseClickCallback = function(){};
 
