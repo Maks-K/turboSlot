@@ -1,6 +1,7 @@
 function WinSituationsModule(){
     var me = this;
-    this.betlines = [];
+    this.totTalbetlinesNumber = CONFIG.betlines.length;
+    this.betlines1 = [];
     this.betlinesIndicators = [];
     this.betline1 = null;
     this.betline2 = null;
@@ -59,15 +60,13 @@ function WinSituationsModule(){
 
     me.onAllReelsStopped = function(){    // shows winning betlines depending on the win outcome
         for(var i = 0; i < me.latestResponse.winBetlines.length; i++){
-            if(me.latestResponse.winBetlines[i]){
-                console.log(me.latestResponse.winBetlines[i])// --//--
-                fireEvent('showBetline', me.latestResponse.winBetlines[i]);
-            }
+           console.log(me.latestResponse.winBetlines[i])// --//--
+           fireEvent('showBetline', me.latestResponse.winBetlines[i]);
         }
     };
-    me.onReelSpinStart = function(){    // hides all the betlines when the new spin starts
-        for(var i = 0; i < me.betlines.length; i++){
-            fireEvent('hideBetline', [i]); //--//--
+    me.onHideAllBetlines = function(){    // hides all the betlines when the new spin starts
+        for(var i = 0; i < me.totTalbetlinesNumber; i++){
+            fireEvent('hideBetline', i); //--//--
         };
     };
 
@@ -75,5 +74,5 @@ function WinSituationsModule(){
     addListener('buttonUnHovered', me.betIndicatorUnHovered);
     addListener('ServerResponse', me.onServerResponse);
     addListener('allReelsStopped', me.onAllReelsStopped);
-    addListener ('reelSpinStart', me.onReelSpinStart);
+    addListener ('reelSpinStart', me.onHideAllBetlines);
 }

@@ -2,24 +2,11 @@ function Betlines( betlinesConfig, link) {
     var me = this;
     this.rootContainer = null;
     this.betlines = [];
-    this.betline1Texture = null;
-    this.betline2Texture = null;
-    this.betline3Texture = null;
     this.link = link;
     this.betlinesConfig = betlinesConfig;
 
-    this.onShowBetline = function (betlineNum) {
-        console.log(me.betlines[betlineNum]);
-        console.log(me.betlines[betlineNum].visible);
-        me.betlines[betlineNum].visible = true;
-    };
-
-    this.onHideBetline = function (betlineNum) {
-        me.betlines[betlineNum].visible = true;
-    };
-
-
-      this.init = function (mainContainer) {
+     this.init = function (mainContainer) {
+         console.log('instance created');
         var rootContainer = new PIXI.Container(),
             betline1Texture = new PIXI.Sprite.fromImage(me.link), //create many textures here
             betline2Texture = new PIXI.Sprite.fromImage(me.link),
@@ -34,19 +21,22 @@ function Betlines( betlinesConfig, link) {
             me.betlines[i].x = me.betlinesConfig[i].x;
             me.betlines[i].y = me.betlinesConfig[i].y;
             me.betlines[i].visible = false;
-        }
-        ;
+        };
 
         rootContainer.addChild(betline1Texture, betline2Texture, betline3Texture);
         mainContainer.addChild(rootContainer);
 
         this.rootContainer = rootContainer;
-        this.betline1Texture = betline1Texture;
-        this.betline2Texture = betline2Texture;
-        this.betline3Texture = betline3Texture;
-
-
     };
+
+    this.onShowBetline = function (betlineNum) {
+        me.betlines[betlineNum].visible = true;
+    };
+
+    this.onHideBetline = function (betlineNum) {
+        me.betlines[betlineNum].visible = false;
+    };
+
     addListener('showBetline', me.onShowBetline);
     addListener('hideBetline', me.onHideBetline);
 }

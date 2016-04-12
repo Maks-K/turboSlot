@@ -6,19 +6,19 @@ function Server (){
             reelStopPos : [4,6,7],
             win : 200,
             winType : 'smallWin',
-            winBetlines : [1]
+            winBetlines : [0]
         },
         {
             reelStopPos : [5,7,8],
             win : 300,
             winType : 'mediumWin',
-            winBetlines : [1, 3]
+            winBetlines : [0, 1]
         },
         {
             reelStopPos : [0,0,0],
             win : 5000,
             winType : 'bigWin',
-            winBetlines : [1, 2, 3]
+            winBetlines : [0, 1, 2]
         },
         {
             reelStopPos : [5,6,7],

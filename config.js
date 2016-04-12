@@ -23,13 +23,13 @@ var firstReel = {
 var CONFIG = {
 	reels : [firstReel, secondReel, thirdReel/*, fourthReel, fifthReel*/],
 	betlineIndicators : [
-		{ x : 10, y : 20},
-		{ x : 10, y : 40},
-		{ x : 10, y : 60}
+		{ x : 45, y : 90},
+		{ x : 45, y : 270},
+		{ x : 45, y : 450}
 	],
 	betlines : [
-		{ x : 30, y : 20},
-		{ x : 30, y : 40},
-		{ x : 30, y : 60}
+		{ x : 45, y : 90},
+		{ x : 45, y : 270},
+		{ x : 45, y : 450}
 	]
 };
