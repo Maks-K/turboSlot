@@ -23,9 +23,9 @@ var firstReel = {
 var CONFIG = {
 	reels : [firstReel, secondReel, thirdReel/*, fourthReel, fifthReel*/],
 	betlineIndicators : [
-		{ x : 45, y : 90},
-		{ x : 45, y : 270},
-		{ x : 45, y : 450}
+		{ x : 45, y : 97, betIndicatorNumber : '1'},
+		{ x : 45, y : 277, betIndicatorNumber : '2'},
+		{ x : 45, y : 457, betIndicatorNumber : '3'}
 	],
 	betlines : [
 		{ x : 45, y : 90},

@@ -26,7 +26,8 @@ var spinModule = new SpinModule(CONFIG.reels);
 var server = new Server();
 var betlines = new Betlines(CONFIG.betlines, 'resources/Bet_Line.png');
 betlines.init(stage);
-//var betlineIndicators = new BetIndicators(CONFIG.betlineIndicators);
+var betlineIndicators = new BetLineIndicators('resources/betlineIndicator.png', 'resources/betlineIndicator.png', 15, 15, CONFIG.betlineIndicators);
+betlineIndicators.init(stage);
 
 var winSituationsModule = new WinSituationsModule();
 winSituationsModule.init(stage);
