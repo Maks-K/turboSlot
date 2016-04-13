@@ -7,30 +7,22 @@ function BetLineIndicators(link1, link2, width, height, config) {
     this.width = width;
     this.height = height;
     this.config = config;
-    this.allIndicators = [];
-    this.allTexts = [];
+/*    this.allIndicators = [];
+    this.allTexts = [];*/
 
     this.init = function (mainContainer) {
         var rootContainer = new PIXI.Container(),
             i,
-            betlineIndicatorButton,
-            textOnButton;
+            betlineIndicatorButton;
 
         for (i = 0; i < this.config.length; i++) {
 
-            betlineIndicatorButton = new Button(me.link1, me.link1, me.width, me.height, me.config[i].x, me.config[i].y, i);
-            textOnButton = new PIXI.Text(me.config[i].betIndicatorNumber);
-
-            textOnButton.position.x = me.config[i].x;
-            textOnButton.position.y = me.config[i].y;
-            textOnButton.anchor.set(0.5);
-
+            betlineIndicatorButton = new DefaultButton(me.link1, me.link1, me.width, me.height, me.config[i].x, me.config[i].y, i, me.config[i].betIndicatorNumber);
             betlineIndicatorButton.onMouseHoverCallback = showBetline(i);
-
+            betlineIndicatorButton.onMouseUnHoverCallback = hideBetline(i);
             betlineIndicatorButton.init(rootContainer);
-            me.allIndicators.push(betlineIndicatorButton);
-            me.allTexts.push(textOnButton);
-            rootContainer.addChild(textOnButton);
+            betlineIndicatorButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
+            //me.allIndicators.push(betlineIndicatorButton);
         }
 
         mainContainer.addChild(rootContainer);
@@ -41,13 +33,16 @@ function BetLineIndicators(link1, link2, width, height, config) {
         function showBetline(betlineNum){
 
             return function () {
-                //console.log(betlineNum);
                 fireEvent('showBetline', betlineNum);
             }
         }
 
+        function hideBetline(betlineNum){
 
-
+            return function () {
+                fireEvent('hideBetline', betlineNum);
+            }
+        }
     };
 }
 

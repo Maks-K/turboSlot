@@ -3,7 +3,7 @@ function SpinButtonModule(){
 	this.spinButton = null;
 
 	this.init = function(mainStage){
-		var spinButton = new Button ('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 115, 115, 873, 268, 'spinButton')
+		var spinButton = new DefaultButton ('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 115, 115, 873, 268, 'spinButton')
 		spinButton.init(stage);
 
 		spinButton.onMouseClickCallback = function () {

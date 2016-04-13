@@ -1,4 +1,4 @@
-function Button(link1, link2, width, height, x, y, buttonType) {
+function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButton) {
     var me = this;
     this.rootContainer = null;
     this.texture = null;
@@ -10,15 +10,32 @@ function Button(link1, link2, width, height, x, y, buttonType) {
     this.x = x;
     this.y = y;
     this.buttonType = buttonType;
+    this.buttonLabel = textOnButton;
+    this.textOnButton = null;
     this.state = 'up';
     this.enabled = true;
+
+    /*this.buttonLabel.style.font = null;
+    this.buttonLabel.style.fill = null;
+    this.buttonLabel.style.stroke = null;
+    this.buttonLabel.style.strokeThickness = strokeThickness;
+    this.buttonLabel.style.dropShadow = dropShadow;*/
+
+
 
     this.init = function (mainContainer) {
         var rootContainer = new PIXI.Container(),
             texture = new PIXI.Sprite.fromImage(me.link1),
-            textureNotActive = new PIXI.Sprite.fromImage(me.link2);
-        rootContainer.position.x = me.x;
-        rootContainer.position.y = me.y;
+            textureNotActive = new PIXI.Sprite.fromImage(me.link2),
+            textOnButton;
+        if(me.buttonLabel){
+            textOnButton = new PIXI.Text(me.buttonLabel);
+        }else{
+            textOnButton = new PIXI.Text('');
+        }
+
+
+        rootContainer.position.set(me.x, me.y);
 
         rootContainer.interactive = true;
         rootContainer.on('mousedown', me.onButtonDown);
@@ -27,21 +44,31 @@ function Button(link1, link2, width, height, x, y, buttonType) {
         rootContainer.on('mouseup', me.onButtonUp);
 
 
-        texture.anchor.x = 0.5;
-        texture.anchor.y = 0.5;
+        texture.anchor.set(0.5);
+        textOnButton.anchor.set(0.5);
+        textOnButton.visible = false;
 
         textureNotActive.visible = false;
-        textureNotActive.anchor.x = 0.5;
-        textureNotActive.anchor.y = 0.5;
+        textureNotActive.anchor.set(0.5);
 
-        rootContainer.addChild(texture, textureNotActive);
+        rootContainer.addChild(texture, textureNotActive, textOnButton);
         mainContainer.addChild(rootContainer);
 
-        this.rootContainer = rootContainer;
-        this.texture = texture;
-        this.textureNotActive = textureNotActive;
+        me.rootContainer = rootContainer;
+        me.texture = texture;
+        me.textureNotActive = textureNotActive;
+        me.textOnButton = textOnButton;
+
+        me.setTextParams('bold 40px Arial', 'black', 'purple', 2, false);
     };
 
+    this.setTextParams = function(font, fontColor, strokeColor, strokeThickness, dropShadow){
+        me.textOnButton.style.font = font;
+        me.textOnButton.style.fill = fontColor;
+        me.textOnButton.style.stroke = strokeColor;
+        me.textOnButton.style.strokeThickness = strokeThickness;
+        me.textOnButton.style.dropShadow = dropShadow;
+    };
 
     this.onButtonDown = function () {
         me.setState('down');//fireEvent for sounds (for all states)
@@ -56,7 +83,6 @@ function Button(link1, link2, width, height, x, y, buttonType) {
             me.onMouseClickCallback();
         }
         if (!me.enabled){
-            console.log('condition works');
             me.texture.visible = false;
             me.textureNotActive.visible = true;
         };
@@ -66,6 +92,7 @@ function Button(link1, link2, width, height, x, y, buttonType) {
         if(me.enabled){
             me.setState('hover');
             me.texture.alpha = 0.7;
+            me.textOnButton.visible = true;
             //fireEvent('buttonHovered', me.buttonType);
             me.onMouseHoverCallback();
         }
@@ -76,6 +103,7 @@ function Button(link1, link2, width, height, x, y, buttonType) {
             me.setState('up');
             me.texture.alpha = 1;
             me.texture.scale.set(1);
+            me.textOnButton.visible = false;
             //fireEvent('buttonUnHovered', me.buttonType);
             me.onMouseUnHoverCallback();
         }
@@ -83,7 +111,6 @@ function Button(link1, link2, width, height, x, y, buttonType) {
 
     this.onMouseHoverCallback = function(){};
     this.onMouseUnHoverCallback = function(){};
-
     this.onMouseClickCallback = function(){};
 
     this.setEnabledState = function(){
