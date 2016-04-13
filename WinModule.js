@@ -87,17 +87,29 @@ function WinModule (x, y){
 		}
 		me.stopTimerId = setTimeout(function () {
             console.log('setTimeout STOP');
-			me.onReelSpinStart();
+			me.winPresentationFinished();
         },5000);
 	};
 
-	this.onReelSpinStart = function(){
+	this.winPresentationFinished = function(){
+
+		fireEvent('winPresentationFinished');
+		fireEvent('hideAllBetlines');
+
+		me.hideWinBanners();
+	};
+
+	this.hideWinBanners = function () {
 		clearTimeout(me.stopTimerId);
 		me.smallWinPresentation.visible = false;
 		me.mediumWinPresentation.visible = false;
 		me.bigWinPresentation.visible = false;
 		me.winPresentationText.visible = false;
-	}
+	};
+
+	this.onReelSpinStart = function(){
+		me.hideWinBanners();
+	};
 
 addListener('ServerResponse', me.onServerResponse)
 addListener('allReelsStopped', me.onAllReelsStopped);

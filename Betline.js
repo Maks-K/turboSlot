@@ -36,9 +36,16 @@ function Betlines( betlinesConfig, link) {
     this.onHideBetline = function (betlineNum) {
         me.betlines[betlineNum].visible = false;
     };
+    this.onHideAllBetlines = function () {
+        for (var j = 0; j < me.betlines.length; j++){
+            me.betlines[j].visible = false;
+        }
+    };
+
 
     addListener('showBetline', me.onShowBetline);
     addListener('hideBetline', me.onHideBetline);
+    addListener('hideAllBetlines', me.onHideAllBetlines);
 }
 
 

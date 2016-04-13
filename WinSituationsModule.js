@@ -64,15 +64,14 @@ function WinSituationsModule(){
            fireEvent('showBetline', me.latestResponse.winBetlines[i]);
         }
     };
-    me.onHideAllBetlines = function(){    // hides all the betlines when the new spin starts
-        for(var i = 0; i < me.totTalbetlinesNumber; i++){
-            fireEvent('hideBetline', i); //--//--
-        };
+
+    me.onReelSpinStart = function(){    // hides all the betlines when the new spin starts
+            fireEvent('hideAllBetlines'); //--//--
     };
 
     addListener('buttonHovered', me.betIndicatorHovered);
     addListener('buttonUnHovered', me.betIndicatorUnHovered);
     addListener('ServerResponse', me.onServerResponse);
     addListener('allReelsStopped', me.onAllReelsStopped);
-    addListener ('reelSpinStart', me.onHideAllBetlines);
+    addListener ('reelSpinStart', me.onReelSpinStart);
 }
