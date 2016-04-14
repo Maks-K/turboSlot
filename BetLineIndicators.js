@@ -18,31 +18,36 @@ function BetLineIndicators(link1, link2, width, height, config) {
         for (i = 0; i < this.config.length; i++) {
 
             betlineIndicatorButton = new DefaultButton(me.link1, me.link1, me.width, me.height, me.config[i].x, me.config[i].y, i, me.config[i].betIndicatorNumber);
-            betlineIndicatorButton.onMouseHoverCallback = showBetline(i);
-            betlineIndicatorButton.onMouseUnHoverCallback = hideBetline(i);
+            betlineIndicatorButton.onMouseHoverCallback = me.showBetline;
+            betlineIndicatorButton.onMouseUnHoverCallback = me.hideBetline;
             betlineIndicatorButton.init(rootContainer);
             betlineIndicatorButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
-            //me.allIndicators.push(betlineIndicatorButton);
+            betlineIndicatorButton.hideTitle();
+            betlineIndicatorButton.betlineNum = i;
         }
+
+
 
         mainContainer.addChild(rootContainer);
 
         me.rootContainer = rootContainer;
 
-
-        function showBetline(betlineNum){
-
-            return function () {
-                fireEvent('showBetline', betlineNum);
-            }
-        }
-
-        function hideBetline(betlineNum){
-
-            return function () {
-                fireEvent('hideBetline', betlineNum);
-            }
-        }
     };
+
+    this.showBetline = function(){
+        this.showTitle();
+
+        console.log(this.betlineNum);
+
+        fireEvent('showBetline', this.betlineNum);
+    };
+
+    this.hideBetline = function(){
+        this.hideTitle();
+        fireEvent('hideBetline', this.betlineNum);
+    };
+
+
+
 }
 

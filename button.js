@@ -1,4 +1,4 @@
-function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButton) {
+function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
     var me = this;
     this.rootContainer = null;
     this.texture = null;
@@ -10,17 +10,10 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
     this.x = x;
     this.y = y;
     this.buttonType = buttonType;
-    this.buttonLabel = textOnButton;
+    this.buttonLabel = text;
     this.textOnButton = null;
     this.state = 'up';
     this.enabled = true;
-
-    /*this.buttonLabel.style.font = null;
-    this.buttonLabel.style.fill = null;
-    this.buttonLabel.style.stroke = null;
-    this.buttonLabel.style.strokeThickness = strokeThickness;
-    this.buttonLabel.style.dropShadow = dropShadow;*/
-
 
 
     this.init = function (mainContainer) {
@@ -30,10 +23,9 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
             textOnButton;
         if(me.buttonLabel){
             textOnButton = new PIXI.Text(me.buttonLabel);
-        }else{
-            textOnButton = new PIXI.Text('');
+            textOnButton.anchor.set(0.5);
+            textOnButton.visible = false;
         }
-
 
         rootContainer.position.set(me.x, me.y);
 
@@ -45,21 +37,24 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
 
 
         texture.anchor.set(0.5);
-        textOnButton.anchor.set(0.5);
-        textOnButton.visible = false;
 
         textureNotActive.visible = false;
         textureNotActive.anchor.set(0.5);
 
-        rootContainer.addChild(texture, textureNotActive, textOnButton);
+        rootContainer.addChild(texture, textureNotActive);
+
+        if(textOnButton){
+            rootContainer.addChild(textOnButton);
+            me.textOnButton = textOnButton;
+            me.setTextParams('bold 40px Arial', 'black', 'purple', 2, false);
+        }
+
         mainContainer.addChild(rootContainer);
 
         me.rootContainer = rootContainer;
         me.texture = texture;
         me.textureNotActive = textureNotActive;
-        me.textOnButton = textOnButton;
 
-        me.setTextParams('bold 40px Arial', 'black', 'purple', 2, false);
     };
 
     this.setTextParams = function(font, fontColor, strokeColor, strokeThickness, dropShadow){
@@ -85,14 +80,13 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
         if (!me.enabled){
             me.texture.visible = false;
             me.textureNotActive.visible = true;
-        };
+        }
     };
 
     this.onButtonHover = function () {
         if(me.enabled){
             me.setState('hover');
             me.texture.alpha = 0.7;
-            me.textOnButton.visible = true;
             //fireEvent('buttonHovered', me.buttonType);
             me.onMouseHoverCallback();
         }
@@ -103,7 +97,6 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
             me.setState('up');
             me.texture.alpha = 1;
             me.texture.scale.set(1);
-            me.textOnButton.visible = false;
             //fireEvent('buttonUnHovered', me.buttonType);
             me.onMouseUnHoverCallback();
         }
@@ -112,6 +105,13 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, textOnButt
     this.onMouseHoverCallback = function(){};
     this.onMouseUnHoverCallback = function(){};
     this.onMouseClickCallback = function(){};
+
+    this.showTitle = function(){
+        me.textOnButton.visible = true;
+    };
+    this.hideTitle = function(){
+        me.textOnButton.visible = false;
+    };
 
     this.setEnabledState = function(){
         me.texture.visible = true;
