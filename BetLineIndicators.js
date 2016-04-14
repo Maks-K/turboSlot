@@ -34,8 +34,14 @@ function BetLineIndicators(link1, link2, width, height, config) {
 
     };
 
+    this.test = function () { //auxiliary function to show context
+      console.log(this);
+    };
+
     this.showBetline = function(){
-        this.showTitle();
+        this.showTitle(); // will be executed from the betlineIndicatorButton context
+
+        me.test(); // will be executed from the BetLineIndicators context, since me. is defined here already
 
         console.log(this.betlineNum);
 
