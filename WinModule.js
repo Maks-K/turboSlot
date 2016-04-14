@@ -95,6 +95,7 @@ function WinModule (x, y){
 
 		fireEvent('winPresentationFinished');
 		fireEvent('hideAllBetlines');
+		fireEvent('hideAllBetlineIndicators');
 
 		me.hideWinBanners();
 	};

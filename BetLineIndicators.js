@@ -7,8 +7,7 @@ function BetLineIndicators(link1, link2, width, height, config) {
     this.width = width;
     this.height = height;
     this.config = config;
-/*    this.allIndicators = [];
-    this.allTexts = [];*/
+    this.betlinesIndicators = [];
 
     this.init = function (mainContainer) {
         var rootContainer = new PIXI.Container(),
@@ -24,6 +23,7 @@ function BetLineIndicators(link1, link2, width, height, config) {
             betlineIndicatorButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
             betlineIndicatorButton.hideTitle();
             betlineIndicatorButton.betlineNum = i;
+            me.betlinesIndicators.push(betlineIndicatorButton);
         }
 
 
@@ -43,7 +43,7 @@ function BetLineIndicators(link1, link2, width, height, config) {
 
         me.test(); // will be executed from the BetLineIndicators context, since me. is defined here already
 
-        console.log(this.betlineNum);
+        console.log(this);
 
         fireEvent('showBetline', this.betlineNum);
     };
@@ -53,7 +53,17 @@ function BetLineIndicators(link1, link2, width, height, config) {
         fireEvent('hideBetline', this.betlineNum);
     };
 
+    this.onShowBetlineIndicatorNumber = function(betlineNum) {
+        me.betlinesIndicators[betlineNum].showTitle();
+    };
 
+    this.hideAllBetlineIndicatorsNumbers = function () {
+        for (var i = 0; i < me.betlinesIndicators.length; i++){
+            me.betlinesIndicators[i].hideTitle();
+        }
+    };
 
+    addListener('showBetlineIndicatorNumber', me.onShowBetlineIndicatorNumber);
+    addListener('hideAllBetlineIndicators', me.hideAllBetlineIndicatorsNumbers);
 }
 

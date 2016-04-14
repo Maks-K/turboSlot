@@ -68,10 +68,11 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
     this.onButtonDown = function () {
         me.setState('down');//fireEvent for sounds (for all states)
         me.texture.scale.set(1.1);
+
     };
 
     this.onButtonUp = function () {
-        if(me.enabled){
+        if(me.enabled && me.state == 'down'){
             me.setState('up');
             me.texture.scale.set(1);
             me.setEnabledState();
@@ -81,25 +82,25 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
             me.texture.visible = false;
             me.textureNotActive.visible = true;
         }
+        console.log(me.state);
     };
 
     this.onButtonHover = function () {
         if(me.enabled){
             me.setState('hover');
             me.texture.alpha = 0.7;
-            //fireEvent('buttonHovered', me.buttonType);
             me.onMouseHoverCallback();
         }
+        console.log(me.state);
     };
 
     this.onButtonUnHover = function () {
-        if(me.enabled){
             me.setState('up');
             me.texture.alpha = 1;
             me.texture.scale.set(1);
             //fireEvent('buttonUnHovered', me.buttonType);
             me.onMouseUnHoverCallback();
-        }
+        console.log(me.state);
     };
 
     this.onMouseHoverCallback = function(){};
@@ -121,9 +122,6 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
     this.setState = function (newState) {
         me.state = newState;
     };
-
-
-
 }
 
 

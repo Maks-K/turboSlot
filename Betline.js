@@ -6,7 +6,6 @@ function Betlines( betlinesConfig, link) {
     this.betlinesConfig = betlinesConfig;
 
      this.init = function (mainContainer) {
-         console.log('instance created');
         var rootContainer = new PIXI.Container(),
             betline1Texture = new PIXI.Sprite.fromImage(me.link), //create many textures here
             betline2Texture = new PIXI.Sprite.fromImage(me.link),
