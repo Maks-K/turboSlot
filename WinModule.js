@@ -94,8 +94,7 @@ function WinModule (x, y){
 	this.winPresentationFinished = function(){
 
 		fireEvent('winPresentationFinished');
-		fireEvent('hideAllBetlines');
-		fireEvent('hideAllBetlineIndicators');
+		fireEvent('hideAllBetlineSituations');
 
 		me.hideWinBanners();
 	};

@@ -53,17 +53,19 @@ function BetLineIndicators(link1, link2, width, height, config) {
         fireEvent('hideBetline', this.betlineNum);
     };
 
-    this.onShowBetlineIndicatorNumber = function(betlineNum) {
+    this.onShowBetlineSituation = function(betlineNum) {
         me.betlinesIndicators[betlineNum].showTitle();
+        fireEvent('showBetline', betlineNum);
     };
 
-    this.hideAllBetlineIndicatorsNumbers = function () {
+    this.onHideAllBetlineSituations = function () {
         for (var i = 0; i < me.betlinesIndicators.length; i++){
             me.betlinesIndicators[i].hideTitle();
+            fireEvent('hideBetline', i);
         }
     };
 
-    addListener('showBetlineIndicatorNumber', me.onShowBetlineIndicatorNumber);
-    addListener('hideAllBetlineIndicators', me.hideAllBetlineIndicatorsNumbers);
+    addListener('showBetlineSituation', me.onShowBetlineSituation);
+    addListener('hideAllBetlineSituations', me.onHideAllBetlineSituations);
 }
 
