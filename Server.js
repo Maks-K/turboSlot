@@ -1,6 +1,7 @@
 function Server (){
     var me = this;
 
+    me.betlevel = 5;
     var stopQueue = [
         {
             reelStopPos : [4,6,7],
@@ -33,11 +34,24 @@ function Server (){
 
         me.onResponse(stopQueue[stopQueueCounter]);
 
-        stopQueueCounter++
+        stopQueueCounter++;
         if(stopQueueCounter >= stopQueue.length){
             stopQueueCounter = 0;
         }
 
+    };
+
+
+    me.onBetlevelChanged = function(newBetlevel){
+        me.betlevel = newBetlevel;
+        for (var i = 0; i < stopQueue.length; i++){
+            if(me.oldBetlevel){
+                stopQueue[i].win = stopQueue[i].win/me.oldBetlevel*me.betlevel;
+            }else{
+                stopQueue[i].win = stopQueue[i].win*me.betlevel;
+            }
+        }
+        me.oldBetlevel = me.betlevel;
     };
 
      this.onResponse = function(response){
@@ -48,4 +62,5 @@ function Server (){
 
 
     addListener('ServerRequest', me.onRequest);
+    addListener('betlevelChanged', me.onBetlevelChanged)
 }

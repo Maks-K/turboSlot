@@ -26,7 +26,7 @@ var spinModule = new SpinModule(CONFIG.reels);
 var server = new Server();
 var betlines = new Betlines(CONFIG.betlines, 'resources/Bet_Line.png');
 betlines.init(stage);
-var betlineIndicators = new BetLineIndicators('resources/betlineIndicator.png', 'resources/betlineIndicator.png', 15, 15, CONFIG.betlineIndicators);
+var betlineIndicators = new BetLineIndicators('resources/betlineIndicator.png', 'resources/betlineIndicator.png', 30, 30, CONFIG.betlineIndicators);
 betlineIndicators.init(stage);
 
 var winSituationsModule = new WinSituationsModule();
@@ -34,6 +34,11 @@ winSituationsModule.init(stage);
 
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
+
+var betLevelSelector = new DefaultSelector(800, 100, 1, 10, 150, 50, 5, 'betlevel');
+betLevelSelector.init(stage);
+var uglySelector = new DefaultSelector(650, 400, 1, 50, 250, 75, 25);
+uglySelector.init(stage);
 
 animate();
 function animate(){

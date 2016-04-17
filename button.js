@@ -37,6 +37,11 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
 
 
         texture.anchor.set(0.5);
+        texture.width = me.width;
+        texture.height = me.height;
+        textureNotActive.width = texture.width;
+        textureNotActive.height = texture.height;
+
 
         textureNotActive.visible = false;
         textureNotActive.anchor.set(0.5);
@@ -67,14 +72,17 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
 
     this.onButtonDown = function () {
         me.setState('down');//fireEvent for sounds (for all states)
-        me.texture.scale.set(1.1);
+        me.texture.width = me.texture.width * 1.1;
+        me.texture.height = me.texture.height * 1.1;
 
     };
 
     this.onButtonUp = function () {
         if(me.enabled && me.state == 'down'){
             me.setState('up');
-            me.texture.scale.set(1);
+            //me.texture.scale.set(1);
+            me.texture.width = me.width;
+            me.texture.height = me.height;
             me.setEnabledState();
             me.onMouseClickCallback();
         }
@@ -82,7 +90,6 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
             me.texture.visible = false;
             me.textureNotActive.visible = true;
         }
-        console.log(me.state);
     };
 
     this.onButtonHover = function () {
@@ -91,16 +98,16 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
             me.texture.alpha = 0.7;
             me.onMouseHoverCallback();
         }
-        console.log(me.state);
     };
 
     this.onButtonUnHover = function () {
             me.setState('up');
             me.texture.alpha = 1;
-            me.texture.scale.set(1);
+            //me.texture.scale.set(1);
+            me.texture.width = me.width;
+            me.texture.height = me.height;
             //fireEvent('buttonUnHovered', me.buttonType);
             me.onMouseUnHoverCallback();
-        console.log(me.state);
     };
 
     this.onMouseHoverCallback = function(){};
@@ -115,8 +122,15 @@ function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
     };
 
     this.setEnabledState = function(){
+        me.enabled = true;
         me.texture.visible = true;
         me.textureNotActive.visible = false;
+    };
+
+    this.setDisabledState = function(){
+        me.enabled = false;
+        me.texture.visible = false;
+        me.textureNotActive.visible = true;
     };
 
     this.setState = function (newState) {

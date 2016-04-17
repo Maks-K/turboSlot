@@ -45,7 +45,7 @@ function SpinModule(reels) {
         me.reelSpinStart(1);
         me.reelSpinStart(2);
         me.stopTimerId = setTimeout(function () {
-            console.log('setTimeout STOP');
+            //console.log('setTimeout STOP');
             if(!me.isQuickStop){
                 me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
             //    me.isStopping = true;
@@ -67,7 +67,7 @@ function SpinModule(reels) {
 
         }
 
-        console.log(me.reelsState);
+        //console.log(me.reelsState);
     };
     this.nextAction = 'spinStart';
     this.onSpinButtonClick = function () {
