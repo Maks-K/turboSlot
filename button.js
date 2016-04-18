@@ -1,16 +1,16 @@
-function DefaultButton(link1, link2, width, height, x, y, buttonType, text) {
+function DefaultButton(params) {
     var me = this;
     this.rootContainer = null;
     this.texture = null;
     this.textureNotActive = null;
-    this.link1 = link1;
-    this.link2 = link2;
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    this.buttonType = buttonType;
-    this.buttonLabel = text;
+    this.link1 = params.textureActive;
+    this.link2 = params.textureNotActive;
+    this.width = params.width;
+    this.height = params.height;
+    this.x = params.x;
+    this.y = params.y;
+    this.buttonType = params.type;
+    this.buttonLabel = params.text;
     this.textOnButton = null;
     this.state = 'up';
     this.enabled = true;

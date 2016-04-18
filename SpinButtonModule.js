@@ -3,8 +3,18 @@ function SpinButtonModule(){
 	this.spinButton = null;
 
 	this.init = function(mainStage){
-		var spinButton = new DefaultButton ('resources/BTN_Spin.png', 'resources/BTN_Spin_d.png', 98, 98, 873, 268, 'spinButton')
-		spinButton.init(stage);
+		var spinButton = new DefaultButton (
+			{
+				textureActive : 'resources/BTN_Spin.png',
+				textureNotActive : 'resources/BTN_Spin_d.png',
+				width : 98,
+				height :98,
+				x : 873,
+				y : 268,
+				type : 'spinButton'
+			}
+		);
+		spinButton.init(mainStage);
 
 		spinButton.onMouseClickCallback = function () {
 			me.onSpinButtonClick();

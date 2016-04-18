@@ -24,6 +24,13 @@ function SelectorBar(x, y, width, height, lightBarWidth){
         greyBar.interactive = true;
         greyBar.on('mousedown', function(event){
             console.log(event.data.getLocalPosition(greyBar));
+            var test = Number(event.data.getLocalPosition(greyBar).x);
+            fireEvent('BarClicked', {
+                selectorType : 'betlevel',
+                coordinate : test
+            });
+            //betLevelSelector.onBarClicked(test);
+            //me.update(event.data.getLocalPosition(greyBar).x);
         });
 
         lightBar.beginFill(0xFF9900);

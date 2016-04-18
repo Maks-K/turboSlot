@@ -1,4 +1,4 @@
-function DefaultSelector(x, y, min, max, width, height, defaultValue, selectorType) {
+function DefaultSelector(params) {
     var me = this;
     this.rootContainer = null;
     this.numberBackGround = null;
@@ -6,27 +6,53 @@ function DefaultSelector(x, y, min, max, width, height, defaultValue, selectorTy
     this.increaseValueButton = null;
     this.selectorValue = null;
     this.bar = null;
+    this.selectorTitle = null;
 
-    this.x = x;
-    this.y = y;
-    this.min = min;
-    this.max = max;
-    this.width = width;
-    this.height = height;
+    this.x = params.x;
+    this.y = params.y;
+    this.min = params.min;
+    this.max = params.max;
+    this.width = params.width;
+    this.height = params.height;
     this.step = 1;
-    this.number = defaultValue;
-    this.barWidth = (me.width * 0.8) * me.number / me.max;
+    this.value = params.defaultValue;
+    this.title = params.title;
+    this.oneStepValue = (me.width * 0.8)/(me.max + me.step - me.min);
+    this.barWidth = (me.width * 0.8) *  (me.value + me.step - me.min) / (me.max + me.step - me.min);
 
-    this.selectorType = selectorType;
+    this.selectorType = params.type;
 
     this.init = function (mainContainer) {
+        console.log(this.oneStepValue)
         var rootContainer = new PIXI.Container(),
-            decreaseValueButton = new DefaultButton('resources/decreaseValueButton.png', 'resources/decreaseValueButtonNotActive.png', me.width / 4, me.height, me.width / 8, me.height / 2, 'decreaseValueButton'),
-            increaseValueButton = new DefaultButton('resources/increaseValueButton.png', 'resources/increaseValueButtonNotActive.png', me.width / 4, me.height, me.width * 7 / 8, me.height / 2, 'increaseValueButton'),
+            decreaseValueButton = new DefaultButton(
+                {
+                    textureActive : 'resources/decreaseValueButton.png',
+                    textureNotActive : 'resources/decreaseValueButtonNotActive.png',
+                    width : me.width / 4,
+                    height : me.height,
+                    x : me.width / 8,
+                    y : me.height / 2,
+                    type : 'decreaseValueButton'
+                }
+            ),
+            increaseValueButton = new DefaultButton(
+                {
+                    textureActive : 'resources/increaseValueButton.png',
+                    textureNotActive : 'resources/increaseValueButtonNotActive.png',
+                    width : me.width / 4,
+                    height : me.height,
+                    x : me.width * 7 / 8,
+                    y : me.height / 2,
+                    type : 'increaseValueButton'
+                }
+            ),
         //numberBackGround = new PIXI.Sprite.fromImage( 'resources/bg.png'),
-            selectorValue = new PIXI.Text(me.number),
+            selectorValue = new PIXI.Text(me.value),
+            title = new PIXI.Text(me.title),
             bar = new SelectorBar(me.width * 0.1, me.height + 10, me.width * 0.8, 6, me.barWidth);
-        fireEvent(me.selectorType + 'Changed', me.number);
+
+        fireEvent(me.selectorType + 'Changed', me.value);
 
         increaseValueButton.onMouseClickCallback = me.increaseSelectorValue;
         decreaseValueButton.onMouseClickCallback = me.decreaseSelectorValue;
@@ -36,6 +62,12 @@ function DefaultSelector(x, y, min, max, width, height, defaultValue, selectorTy
         selectorValue.anchor.x = 0.5;
         selectorValue.anchor.y = 0.5;
 
+        title.position.set(me.width / 2, -me.height*0.4);
+        title.anchor.x = 0.5;
+        title.anchor.y = 0.5;
+        title.style.font = 'bold 25px Arial';
+
+
         /*numberBackGround.width = me.width;
          numberBackGround.height = me.height;*/
 
@@ -44,28 +76,30 @@ function DefaultSelector(x, y, min, max, width, height, defaultValue, selectorTy
         decreaseValueButton.init(rootContainer);
         increaseValueButton.init(rootContainer);
         bar.init(rootContainer);
-        rootContainer.addChild(selectorValue);
+        rootContainer.addChild(selectorValue, title);
         mainContainer.addChild(rootContainer);
 
 
 
-        this.rootContainer = rootContainer;
-        this.increaseValueButton = increaseValueButton;
-        this.decreaseValueButton = decreaseValueButton;
-        this.selectorValue = selectorValue;
+        me.rootContainer = rootContainer;
+        me.increaseValueButton = increaseValueButton;
+        me.decreaseValueButton = decreaseValueButton;
+        me.selectorValue = selectorValue;
         //this.numberBackGround = numberBackGround;
-        this.bar = bar;
+        me.bar = bar;
+        me.selectorTitle = title;
+
 
         me.checkEnabled();
     };
 
     this.checkEnabled = function () {
 
-        if (me.number == me.max) {
+        if (me.value == me.max) {
             me.increaseValueButton.setDisabledState();
             me.decreaseValueButton.setEnabledState();
         }
-        else if (me.number == me.min){
+        else if (me.value == me.min){
             me.decreaseValueButton.setDisabledState();
             me.increaseValueButton.setEnabledState();
         } else {
@@ -76,32 +110,39 @@ function DefaultSelector(x, y, min, max, width, height, defaultValue, selectorTy
     };
 
     this.setBarWidth = function () {
-        me.barWidth = (me.width * 0.8) * me.number / me.max;
+        me.barWidth = (me.width * 0.8) * (me.value + me.step - me.min) / (me.max + me.step - me.min);
         me.bar.update(me.barWidth);
     };
 
     this.increaseSelectorValue = function () {
-        me.setNewNumber(me.number + me.step);
+        me.setNewValue(me.value + me.step);
 
     };
 
     this.decreaseSelectorValue = function () {
-        me.setNewNumber(me.number - me.step);
+        me.setNewValue(me.value - me.step);
     };
 
-    this.setNewNumber = function(newNumber){
-        me.number = newNumber;
-        if(newNumber > me.max){
-            me.number = me.max;
+    this.setNewValue = function(newValue){
+        me.value = newValue;
+        if(newValue > me.max){
+            me.value = me.max;
         }
-        if(newNumber < me.min){
-            me.number = me.min;
+        if(newValue < me.min){
+            me.value = me.min;
         }
-        me.selectorValue.text = me.number;
-        fireEvent(me.selectorType + 'Changed', me.number);
+        me.selectorValue.text = me.value;
+        fireEvent(me.selectorType + 'Changed', me.value);
         me.checkEnabled();
         me.setBarWidth();
-
     };
 
+    this.onBarClicked = function(params){
+        if(me.selectorType = params.selectorType){
+            var receivedValue = Number((me.min - me.step + params.coordinate / me.oneStepValue).toFixed(0));
+            me.setNewValue(receivedValue);
+        }
+    };
+
+    addListener('BarClicked', me.onBarClicked);
 }

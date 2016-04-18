@@ -16,7 +16,18 @@ function BetLineIndicators(link1, link2, width, height, config) {
 
         for (i = 0; i < this.config.length; i++) {
 
-            betlineIndicatorButton = new DefaultButton(me.link1, me.link1, me.width, me.height, me.config[i].x, me.config[i].y, i, me.config[i].betIndicatorNumber);
+            betlineIndicatorButton = new DefaultButton(
+                {
+                    textureActive : me.link1,
+                    textureNotActive :  me.link1,
+                    width : me.width,
+                    height :me.height,
+                    x : me.config[i].x,
+                    y : me.config[i].y,
+                    type : i,
+                    text : me.config[i].betIndicatorNumber
+                }
+             );
             betlineIndicatorButton.onMouseHoverCallback = me.showBetline;
             betlineIndicatorButton.onMouseUnHoverCallback = me.hideBetline;
             betlineIndicatorButton.init(rootContainer);

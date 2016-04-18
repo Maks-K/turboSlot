@@ -1,5 +1,5 @@
 var screenWidth = 960,
-	screenHeight = 736;
+	screenHeight = 666;
 var renderer = PIXI.autoDetectRenderer( screenWidth, screenHeight ),
 	stage = new PIXI.Container();
 document.body.appendChild( renderer.view );
@@ -35,10 +35,34 @@ winSituationsModule.init(stage);
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
-var betLevelSelector = new DefaultSelector(800, 100, -5, 10, 150, 50, 5, 'betlevel');
+var betLevelSelector = new DefaultSelector(
+	{
+		x : 800,
+		y : 100,
+		min : -5,
+		max : 10,
+		width : 150,
+		height : 50,
+		defaultValue : 6,
+		type : 'betlevel',
+		title : 'BETLEVEL'
+	}
+);
 betLevelSelector.init(stage);
-var uglySelector = new DefaultSelector(650, 400, 1, 50, 250, 75, 25);
-uglySelector.init(stage);
+/*var uglySelector = new DefaultSelector(
+	{
+		x : 650,
+		y : 400,
+		min : 1,
+		max : 50,
+		width : 250,
+		height : 75,
+		defaultValue : 25,
+		type : 'fake',
+		title : 'UGLYSELECTOR'
+	}
+);
+uglySelector.init(stage);*/
 
 animate();
 function animate(){
