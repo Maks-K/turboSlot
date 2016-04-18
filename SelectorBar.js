@@ -21,6 +21,11 @@ function SelectorBar(x, y, width, height, lightBarWidth){
         greyBar.drawRect(0,0,me.width, me.height);
         greyBar.endFill();
 
+        greyBar.interactive = true;
+        greyBar.on('mousedown', function(event){
+            console.log(event.data.getLocalPosition(greyBar));
+        });
+
         lightBar.beginFill(0xFF9900);
         lightBar.drawRect(0,0,me.lightBarWidth, me.height);
         lightBar.endFill();

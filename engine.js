@@ -1,10 +1,10 @@
 var screenWidth = 960,
-	screenHeight = 536;
+	screenHeight = 736;
 var renderer = PIXI.autoDetectRenderer( screenWidth, screenHeight ),
 	stage = new PIXI.Container();
 document.body.appendChild( renderer.view );
 
-var background = new Background('resources/bg.png', screenWidth, screenHeight, 0, 0)
+var background = new Background('resources/bg.png', screenWidth, 536, 0, 0);
 background.init(stage);
 var spinButtonModule = new SpinButtonModule();
 spinButtonModule.init(stage);
@@ -35,7 +35,7 @@ winSituationsModule.init(stage);
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
-var betLevelSelector = new DefaultSelector(800, 100, 1, 10, 150, 50, 5, 'betlevel');
+var betLevelSelector = new DefaultSelector(800, 100, -5, 10, 150, 50, 5, 'betlevel');
 betLevelSelector.init(stage);
 var uglySelector = new DefaultSelector(650, 400, 1, 50, 250, 75, 25);
 uglySelector.init(stage);
