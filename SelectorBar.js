@@ -1,4 +1,4 @@
-function SelectorBar(x, y, width, height, lightBarWidth){
+function SelectorBar(x, y, width, height, lightBarWidth, min, max, step, selectorType){
     var me = this;
     this.rootContainer = null;
     this.greyBar = null;
@@ -9,8 +9,15 @@ function SelectorBar(x, y, width, height, lightBarWidth){
     this.width = width;
     this.height = height;
     this.lightBarWidth = lightBarWidth;
+    this.min = min;
+    this.max = max;
+    this.step = step;
+    this.selectorType = selectorType;
+    this.stepsNumber = (me.max - me.min)/me.step;
+    this.oneStepValue = me.width /me.stepsNumber;
 
     this.init = function(mainContainer){
+        //console.log(me.oneStepValue)
         var rootContainer = new PIXI.Container(),
             greyBar = new PIXI.Graphics(),
             lightBar = new PIXI.Graphics();
@@ -25,9 +32,12 @@ function SelectorBar(x, y, width, height, lightBarWidth){
         greyBar.on('mousedown', function(event){
             console.log(event.data.getLocalPosition(greyBar));
             var test = Number(event.data.getLocalPosition(greyBar).x);
+            var number = ((me.min*10 - me.step*10)/10 + Number((test / me.oneStepValue).toFixed(0)));
+            //me.onBarClick(number);
+            console.log(number);
             fireEvent('BarClicked', {
-                selectorType : 'betlevel',
-                coordinate : test
+                selectorType : me.selectorType,
+                newValue : (number*10 * me.step*10 + me.step*100)/100
             });
             //betLevelSelector.onBarClicked(test);
             //me.update(event.data.getLocalPosition(greyBar).x);
@@ -51,4 +61,5 @@ function SelectorBar(x, y, width, height, lightBarWidth){
         me.lightBar.drawRect(0, 0, newLightBarWidth, me.height);
         me.lightBar.endFill();
     }
+    this.onBarClick = function(number){};
 }

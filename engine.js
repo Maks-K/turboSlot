@@ -35,20 +35,6 @@ winSituationsModule.init(stage);
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
-var betLevelSelector = new DefaultSelector(
-	{
-		x : 800,
-		y : 100,
-		min : -5,
-		max : 10,
-		width : 150,
-		height : 50,
-		defaultValue : 6,
-		type : 'betlevel',
-		title : 'BETLEVEL'
-	}
-);
-betLevelSelector.init(stage);
 /*var uglySelector = new DefaultSelector(
 	{
 		x : 650,
@@ -63,6 +49,9 @@ betLevelSelector.init(stage);
 	}
 );
 uglySelector.init(stage);*/
+
+var keyPad = new KeyPad(0, 536, 960, 130);
+keyPad.init(stage);
 
 animate();
 function animate(){

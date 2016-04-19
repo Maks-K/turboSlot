@@ -14,7 +14,7 @@ function DefaultSelector(params) {
     this.max = params.max;
     this.width = params.width;
     this.height = params.height;
-    this.step = 1;
+    this.step = params.step;
     this.value = params.defaultValue;
     this.title = params.title;
     this.oneStepValue = (me.width * 0.8)/(me.max + me.step - me.min);
@@ -50,7 +50,9 @@ function DefaultSelector(params) {
         //numberBackGround = new PIXI.Sprite.fromImage( 'resources/bg.png'),
             selectorValue = new PIXI.Text(me.value),
             title = new PIXI.Text(me.title),
-            bar = new SelectorBar(me.width * 0.1, me.height + 10, me.width * 0.8, 6, me.barWidth);
+            bar = new SelectorBar(me.width * 0.1, me.height + 10, me.width * 0.8, 6, me.barWidth, me.min, me.max, me.step, me.selectorType);
+
+        bar.onBarClick = me.onBarClick;
 
         fireEvent(me.selectorType + 'Changed', me.value);
 
@@ -110,17 +112,17 @@ function DefaultSelector(params) {
     };
 
     this.setBarWidth = function () {
-        me.barWidth = (me.width * 0.8) * (me.value + me.step - me.min) / (me.max + me.step - me.min);
+        me.barWidth = (me.width * 0.8) * (me.value + me.step - me.min) / (me.max + me.step - me.min)*10/10;
         me.bar.update(me.barWidth);
     };
 
     this.increaseSelectorValue = function () {
-        me.setNewValue(me.value + me.step);
+        me.setNewValue((me.value*10 + me.step*10)/10);
 
     };
 
     this.decreaseSelectorValue = function () {
-        me.setNewValue(me.value - me.step);
+        me.setNewValue((me.value*10 - me.step*10)/10);
     };
 
     this.setNewValue = function(newValue){
@@ -138,9 +140,9 @@ function DefaultSelector(params) {
     };
 
     this.onBarClicked = function(params){
-        if(me.selectorType = params.selectorType){
-            var receivedValue = Number((me.min - me.step + params.coordinate / me.oneStepValue).toFixed(0));
-            me.setNewValue(receivedValue);
+        if(me.selectorType == params.selectorType){
+            me.setNewValue(params.newValue);
+            console.log(params.newValue)
         }
     };
 
