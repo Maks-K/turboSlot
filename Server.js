@@ -5,9 +5,9 @@ function Server (){
     var stopQueue = [
         {
             reelStopPos : [4,6,7],
+            winBetlines : [0],
             win : 200,
-            winType : 'smallWin',
-            winBetlines : [0]
+            winType : 'smallWin'
         },
         {
             reelStopPos : [5,7,8],
@@ -38,6 +38,21 @@ function Server (){
         if(stopQueueCounter >= stopQueue.length){
             stopQueueCounter = 0;
         }
+
+    };
+
+    this.generateOutcome = function(){
+        var resp = {
+            reelStopPos : [],
+            winBetlines : [],
+            win : 0,
+            winType : ''
+        };
+
+        ///////
+
+
+        return resp;
 
     };
 
