@@ -14,6 +14,7 @@ function Background(link, width, height, x, y){
 		rootContainer.position.x = me.x;
 		rootContainer.position.y = me.y;
 
+		texture.interactive = true;
 		texture.height = me.height;
         texture.width = me.width;
 

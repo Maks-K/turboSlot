@@ -24,7 +24,7 @@ function ValuesHolder(x, y, width, height, value, title){
         backGround.drawRoundedRect(0, 0, me.width, me.height, 10);
         backGround.endFill();
 
-        title.position.set(me.width/2, -me.height/5);
+        title.position.set(me.width/2, -me.height/2);
         title.anchor.x = 0.5;
         title.anchor.y = 0.5;
         title.style.font = 'bold 25px Arial';

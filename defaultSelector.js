@@ -23,7 +23,7 @@ function DefaultSelector(params) {
     this.selectorType = params.type;
 
     this.init = function (mainContainer) {
-        console.log(this.oneStepValue)
+        console.log(this.oneStepValue);
         var rootContainer = new PIXI.Container(),
             decreaseValueButton = new DefaultButton(
                 {
@@ -145,6 +145,10 @@ function DefaultSelector(params) {
             console.log(params.newValue)
         }
     };
+
+/*    this.maxBetButtonChangeState = function(){
+
+    }*/
 
     addListener('BarClicked', me.onBarClicked);
 }

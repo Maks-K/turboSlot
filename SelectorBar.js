@@ -15,9 +15,9 @@ function SelectorBar(x, y, width, height, lightBarWidth, min, max, step, selecto
     this.selectorType = selectorType;
     this.stepsNumber = (me.max - me.min)/me.step;
     this.oneStepValue = me.width /me.stepsNumber;
+    this.state = 'up';
 
     this.init = function(mainContainer){
-        //console.log(me.oneStepValue)
         var rootContainer = new PIXI.Container(),
             greyBar = new PIXI.Graphics(),
             lightBar = new PIXI.Graphics();
@@ -34,13 +34,28 @@ function SelectorBar(x, y, width, height, lightBarWidth, min, max, step, selecto
             var test = Number(event.data.getLocalPosition(greyBar).x);
             var number = ((me.min*10 - me.step*10)/10 + Number((test / me.oneStepValue).toFixed(0)));
             //me.onBarClick(number);
-            console.log(number);
+            me.state = 'down';
+            console.log(me.state);
             fireEvent('BarClicked', {
                 selectorType : me.selectorType,
-                newValue : (number*10 * me.step*10 + me.step*100)/100
+                newValue : (number * 10 * me.step * 10 + me.step * 100)/100
             });
-            //betLevelSelector.onBarClicked(test);
-            //me.update(event.data.getLocalPosition(greyBar).x);
+        });
+        greyBar.on('mousemove', function(event){
+            if(me.state == 'down'){
+                var test = Number(event.data.getLocalPosition(greyBar).x);
+                var number = ((me.min*10 - me.step*10)/10 + Number((test / me.oneStepValue).toFixed(0)));
+                console.log(me.state);
+                fireEvent('BarClicked', {
+                    selectorType : me.selectorType,
+                    newValue : (number * 10 * me.step * 10 + me.step * 100)/100
+                });
+            }
+        });
+
+        window.addEventListener('mouseup', function(event){
+            me.state = 'up';
+            //console.log('root'+me.state);
         });
 
         lightBar.beginFill(0xFF9900);
@@ -60,6 +75,6 @@ function SelectorBar(x, y, width, height, lightBarWidth, min, max, step, selecto
         me.lightBar.beginFill(0xFF9900);
         me.lightBar.drawRect(0, 0, newLightBarWidth, me.height);
         me.lightBar.endFill();
-    }
+    };
     this.onBarClick = function(number){};
 }

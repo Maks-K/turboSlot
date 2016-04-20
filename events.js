@@ -10,7 +10,7 @@ function addListener(eventName, functionCallback){
 }
 
 function fireEvent(event, params){
-	console.error(event, params);
+	//aconsole.error(event, params);
 
 	if(events[event]){
 		for(var i = 0; i < events[event].length; i++){

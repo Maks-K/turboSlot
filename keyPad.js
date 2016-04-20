@@ -6,6 +6,8 @@ function KeyPad(x, y, width, height){
     this.cash = null;
     this.paytableButton = null;
     this.gamerulesButton = null;
+    this.maxBetButton = null;
+    this.autoPlayButton = null;
     this.betLevelSelector = null;
     this.coinValueSelector = null;
 
@@ -17,8 +19,8 @@ function KeyPad(x, y, width, height){
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
             backGround = new PIXI.Graphics(),
-            coins = new ValuesHolder(500,40,200,60,'100','coins'),
-            cash = new ValuesHolder(720,40,200,60,'200','cash'),
+            coins = new ValuesHolder(820,30,120,25,'100','coins'),
+            cash = new ValuesHolder(820,90,120,25,'200','cash'),
             paytableButton = new DefaultButton (
                 {
                     textureActive : 'resources/paytableGamerules.png',
@@ -41,6 +43,30 @@ function KeyPad(x, y, width, height){
                     y : 90,
                     type : 'gamerulesButton',
                     text : 'i'
+                }
+            ),
+            maxBetButton = new DefaultButton (
+                {
+                    textureActive : 'resources/squareButton.png',
+                    textureNotActive : 'resources/squareButton.png',
+                    width : 160,
+                    height :70,
+                    x : 550,
+                    y : 70,
+                    type : 'maxBetButton',
+                    text : 'MAX BET'
+                }
+            ),
+            autoPlayButton = new DefaultButton (
+                {
+                    textureActive : 'resources/squareButton.png',
+                    textureNotActive : 'resources/squareButton.png',
+                    width : 160,
+                    height :70,
+                    x : 720,
+                    y : 70,
+                    type : 'autoPlayButton',
+                    text : 'AUTO PLAY'
                 }
             ),
             betLevelSelector = new DefaultSelector(
@@ -81,6 +107,8 @@ function KeyPad(x, y, width, height){
         rootContainer.addChild(backGround);
         paytableButton.init(rootContainer);
         gamerulesButton.init(rootContainer);
+        maxBetButton.init(rootContainer);
+        autoPlayButton.init(rootContainer);
         coins.init(rootContainer);
         cash.init(rootContainer);
         betLevelSelector.init(rootContainer);
@@ -90,8 +118,16 @@ function KeyPad(x, y, width, height){
         paytableButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
         gamerulesButton.textOnButton.visible = true;
         gamerulesButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
+        maxBetButton.textOnButton.visible = true;
+        maxBetButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
+        autoPlayButton.textOnButton.visible = true;
+        autoPlayButton.setTextParams('bold 25px Arial', 'yellow', 'purple', 2, false);
 
-        mainContainer.addChild(rootContainer);
+        maxBetButton.condition = 'notPressed';
+        maxBetButton.onMouseClickCallback = this.onMaxBetButtonClick;
+
+
+            mainContainer.addChild(rootContainer);
 
         me.rootContainer = rootContainer;
         me.backGround = backGround;
@@ -101,6 +137,18 @@ function KeyPad(x, y, width, height){
         me.gamerulesButton = gamerulesButton;
         me.betLevelSelector = betLevelSelector;
         me.coinValueSelector = coinValueSelector;
+        me.maxBetButton = maxBetButton;
+        me.autoPlayButton = autoPlayButton;
     }
 
+    this.onMaxBetButtonClick = function(){
+        if(this.condition == 'notPressed'){
+            this.condition = 'pressed';
+            me.betLevelSelector.setNewValue(me.betLevelSelector.max)
+            betlineIndicators.onShowAllBetlineSituations();
+        }else if(this.condition == 'pressed'){
+            this.condition = 'notPressed';
+            fireEvent('spinButtonClick');
+        }
+    }
 }

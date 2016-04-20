@@ -69,6 +69,13 @@ function BetLineIndicators(link1, link2, width, height, config) {
         fireEvent('showBetline', betlineNum);
     };
 
+    this.onShowAllBetlineSituations = function () {
+        for (var i = 0; i < me.betlinesIndicators.length; i++){
+            me.betlinesIndicators[i].showTitle();
+            fireEvent('showBetline', i);
+        }
+    };
+
     this.onHideAllBetlineSituations = function () {
         for (var i = 0; i < me.betlinesIndicators.length; i++){
             me.betlinesIndicators[i].hideTitle();
