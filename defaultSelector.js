@@ -135,6 +135,8 @@ function DefaultSelector(params) {
         }
         me.selectorValue.text = me.value;
         fireEvent(me.selectorType + 'Changed', me.value);
+        fireEvent('hideAllBetlineSituations');
+
         me.checkEnabled();
         me.setBarWidth();
     };
@@ -146,9 +148,20 @@ function DefaultSelector(params) {
         }
     };
 
-/*    this.maxBetButtonChangeState = function(){
+    this.onReelSpinStart = function(){
+        me.increaseValueButton.setDisabledState();
+        me.decreaseValueButton.setDisabledState();
+        me.bar.greyBar.interactive = false;
+    };
 
-    }*/
+    this.onAllReelsStopped = function(){
+        me.checkEnabled();
+        me.bar.greyBar.interactive = true;
+    };
+
 
     addListener('BarClicked', me.onBarClicked);
+    addListener('reelSpinStart', me.onReelSpinStart);
+    addListener('allReelsStopped', me.onAllReelsStopped);
+
 }

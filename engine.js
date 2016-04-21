@@ -35,23 +35,11 @@ winSituationsModule.init(stage);
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
-/*var uglySelector = new DefaultSelector(
-	{
-		x : 650,
-		y : 400,
-		min : 1,
-		max : 50,
-		width : 250,
-		height : 75,
-		defaultValue : 25,
-		type : 'fake',
-		title : 'UGLYSELECTOR'
-	}
-);
-uglySelector.init(stage);*/
-
 var keyPad = new KeyPad(0, 536, 960, 130);
 keyPad.init(stage);
+
+var payTable = new PayTable(60, 10, 770, 490);
+payTable.init(stage);
 
 animate();
 function animate(){
