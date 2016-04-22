@@ -27,9 +27,10 @@ var CONFIG = {
 		{ x : 45, y : 277, betIndicatorNumber : '2'},
 		{ x : 45, y : 457, betIndicatorNumber : '3'}
 	],
-	betlines : [
+	betlinesCoords : [
 		{ x : 45, y : 90},
 		{ x : 45, y : 270},
 		{ x : 45, y : 450}
-	]
+	],
+	betlines : [ [0,0,0], [1,1,1], [2,2,2]  ]
 };
