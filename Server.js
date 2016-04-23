@@ -67,13 +67,15 @@ function Server (){
 
                 }else if(reelsetLength - randomSym < config.reelLength){
 
-                    var SYMsToEdge =  reelsetLength - randomSym-1;
+                    var SYMsToEdge =  reelsetLength - randomSym-1; // symbols till the end of reel counter
+
                     for(var j = 0; j < config.reelLength-1; j++){
+
                         if (SYMsToEdge > 0){
-                            reelOutcome.push(randomSym + j +1);
+                            reelOutcome.push(randomSym + j +1); //adds symbols till the reel ends
                         }
                         if (SYMsToEdge <= 0){
-                            reelOutcome.push(Math.abs(SYMsToEdge));
+                            reelOutcome.push(Math.abs(SYMsToEdge)); //starts adding from the beginning after the reel ends
                         }
                         console.log(SYMsToEdge);
                         SYMsToEdge--;
