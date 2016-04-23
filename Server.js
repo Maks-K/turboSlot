@@ -32,13 +32,13 @@ function Server (){
     this.onRequest = function (params) {//sends the stopQueueCounter response from the queue and updates counter (to 0, when necessary)
         //SOME MAGIC
 
-        me.onResponse(stopQueue[stopQueueCounter]);
+/*        me.onResponse(stopQueue[stopQueueCounter]);
 
         stopQueueCounter++;
         if(stopQueueCounter >= stopQueue.length){
             stopQueueCounter = 0;
-        }
-        me.generateOutcome();
+        }*/
+        me.onResponse(me.generateOutcome());
     };
 
     this.generateOutcome = function(){
@@ -51,14 +51,13 @@ function Server (){
 
         var outcomesArray = [];
 
-
         this.generateReelStopPos = function(config){
             for(var i = 0; i < config.reels.length; i++){
                 var reelOutcome = [];
                 var reelsetLength = config.reels[i].reelSet.length;
                 var randomSym = Math.floor(Math.random()*reelsetLength);
-                resp.reelStopPos.push(randomSym);
 
+                resp.reelStopPos.push(randomSym);
                 reelOutcome.push(randomSym);
 
                 if(reelsetLength - randomSym >= config.reelLength){
@@ -68,7 +67,6 @@ function Server (){
                 }else if(reelsetLength - randomSym < config.reelLength){
 
                     var SYMsToEdge =  reelsetLength - randomSym-1; // symbols till the end of reel counter
-
                     for(var j = 0; j < config.reelLength-1; j++){
 
                         if (SYMsToEdge > 0){
@@ -77,19 +75,45 @@ function Server (){
                         if (SYMsToEdge <= 0){
                             reelOutcome.push(Math.abs(SYMsToEdge)); //starts adding from the beginning after the reel ends
                         }
-                        console.log(SYMsToEdge);
                         SYMsToEdge--;
                     }
                 };
 
                 outcomesArray.push(reelOutcome);
-                console.log(outcomesArray);
             }
         };
 
         this.generateReelStopPos(CONFIG);
         console.log(resp.reelStopPos);
 
+        this.checkBetlines = function(betlines){
+            for(var i = 0; i < betlines.length; i++){
+                console.log('Betline ' + i+1 + ' ' + CONFIG.reels[0].reelSet[outcomesArray[0][betlines[i][0]]],
+                            CONFIG.reels[1].reelSet[outcomesArray[1][betlines[i][1]]],
+                            CONFIG.reels[2].reelSet[outcomesArray[2][betlines[i][2]]]);
+                if( CONFIG.reels[0].reelSet[outcomesArray[0][betlines[i][0]]]==
+                    CONFIG.reels[1].reelSet[outcomesArray[1][betlines[i][1]]] &&
+                        CONFIG.reels[1].reelSet[outcomesArray[1][betlines[i][1]]] ==
+                        CONFIG.reels[2].reelSet[outcomesArray[2][betlines[i][2]]]
+                ){
+                    resp.winBetlines.push(i);
+                    resp.win = resp.win + 10;
+                    console.log('its a winning betline');
+                };
+            }
+            console.log(resp.winBetlines);
+            if(resp.win > 0 && resp.win <= 10){
+                resp.winType = 'smallWin';
+            }
+            if(resp.win > 10 && resp.win <= 20){
+                resp.winType = 'mediumWin';
+            }
+            if(resp.win > 20){
+                resp.winType = 'bigWin';
+            }
+        };
+
+        this.checkBetlines(CONFIG.betlines);
         return resp;
 
     };

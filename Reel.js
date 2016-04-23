@@ -27,7 +27,7 @@ function Reel(reelNumber, reelStrip, xOffset, stopPosition) {
 
                 me.stopPosition = params.stopSym;
                 this.firstSymStopPositionY = -(me.reelStrip.length * me.SymHeight)//.toFixed(0);
-                this.symStopPositionY = -((me.reelStrip.length - me.stopPosition) * me.SymHeight)//.toFixed(0);
+                this.symStopPositionY = -((me.reelStrip.length - (me.reelStrip.length - me.stopPosition)) * me.SymHeight)//.toFixed(0);
 
                 //TODO - refactor / done as much as possible + comments added where needed
                 if (me.stopPosition == me.reelStrip.length) { //condition of triggering the very first symbol on the reel

@@ -10,7 +10,7 @@ function WinSituationsModule(){
 
     me.onAllReelsStopped = function(){    // shows winning betlines depending on the win outcome
         for(var i = 0; i < me.latestResponse.winBetlines.length; i++){
-           console.log(me.latestResponse.winBetlines[i]);// --//--
+           //console.log(me.latestResponse.winBetlines[i]);// --//--
            fireEvent('showBetlineSituation', me.latestResponse.winBetlines[i]);
         }
     };
