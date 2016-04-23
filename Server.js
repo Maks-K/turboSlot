@@ -38,7 +38,7 @@ function Server (){
         if(stopQueueCounter >= stopQueue.length){
             stopQueueCounter = 0;
         }
-
+        me.generateOutcome();
     };
 
     this.generateOutcome = function(){
@@ -49,14 +49,51 @@ function Server (){
             winType : ''
         };
 
+        var outcomesArray = [];
 
 
-        ///////
+        this.generateReelStopPos = function(config){
+            for(var i = 0; i < config.reels.length; i++){
+                var reelOutcome = [];
+                var reelsetLength = config.reels[i].reelSet.length;
+                var randomSym = Math.floor(Math.random()*reelsetLength);
+                resp.reelStopPos.push(randomSym);
 
+                reelOutcome.push(randomSym);
+
+                if(reelsetLength - randomSym >= config.reelLength){
+
+                    reelOutcome.push(randomSym + 1, randomSym + 2);
+
+                }else if(reelsetLength - randomSym < config.reelLength){
+
+                    var SYMsToEdge =  reelsetLength - randomSym-1;
+                    for(var j = 0; j < config.reelLength-1; j++){
+                        if (SYMsToEdge > 0){
+                            reelOutcome.push(randomSym + j +1);
+                        }
+                        if (SYMsToEdge <= 0){
+                            reelOutcome.push(Math.abs(SYMsToEdge));
+                        }
+                        console.log(SYMsToEdge);
+                        SYMsToEdge--;
+                    }
+                };
+
+                outcomesArray.push(reelOutcome);
+                console.log(outcomesArray);
+            }
+        };
+
+        this.generateReelStopPos(CONFIG);
+        console.log(resp.reelStopPos);
 
         return resp;
 
     };
+
+
+
 
 
     me.onBetlevelChanged = function(newBetlevel){

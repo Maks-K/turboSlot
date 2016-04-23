@@ -27,6 +27,7 @@ var CONFIG = {
 		{ x : 45, y : 277, betIndicatorNumber : '2'},
 		{ x : 45, y : 457, betIndicatorNumber : '3'}
 	],
+	reelLength : 3,
 	betlinesCoords : [
 		{ x : 45, y : 90},
 		{ x : 45, y : 270},
