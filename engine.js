@@ -23,6 +23,8 @@ for ( var j = 0; j < CONFIG.reels.length; j++ ){
 
 
 var spinModule = new SpinModule(CONFIG.reels);
+var keyPad = new KeyPad(0, 536, 960, 130);
+keyPad.init(stage);
 var server = new Server();
 var betlines = new Betlines(CONFIG.betlinesCoords, 'resources/Bet_Line.png');
 betlines.init(stage);
@@ -34,9 +36,6 @@ winSituationsModule.init(stage);
 
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
-
-var keyPad = new KeyPad(0, 536, 960, 130);
-keyPad.init(stage);
 
 var payTable = new PayTable(60, 10, 770, 490);
 payTable.init(stage);

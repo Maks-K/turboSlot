@@ -72,8 +72,11 @@ function DefaultButton(params) {
 
     this.onButtonDown = function () {
         me.setState('down');//fireEvent for sounds (for all states)
-        me.texture.width = me.texture.width * 1.1;
-        me.texture.height = me.texture.height * 1.1;
+        if(me.texture.width == me.width){
+            me.texture.width = me.texture.width * 1.1;
+            me.texture.height = me.texture.height * 1.1;
+        }
+        //console.log('button down')
 
     };
 
