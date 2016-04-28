@@ -7,6 +7,9 @@ function PayTable(x, y, width, height){
     this.backGround = null;
     this.paytableLeftSelector = null;
     this.paytableRightSelector = null;
+    this.page1Indicator = null;
+    this.page2Indicator = null;
+    this.page3Indicator = null;
     this.sym1Image = null;
     this.sym1Explanation = null;
     this.sym2Image = null;
@@ -62,6 +65,39 @@ function PayTable(x, y, width, height){
                     x : 730,
                     y : 268,
                     type : 'paytableRightSelector'
+                }
+            ),
+            page1Indicator = new DefaultButton(
+                {
+                    textureActive : 'resources/pageIndicatorActive.png',
+                    textureNotActive : 'resources/pageIndicatorNotActive.png',
+                    width : 15,
+                    height :15,
+                    x : 300,
+                    y : 475,
+                    type : 'pageIndicator'
+                }
+            ),
+            page2Indicator = new DefaultButton(
+                {
+                    textureActive : 'resources/pageIndicatorActive.png',
+                    textureNotActive : 'resources/pageIndicatorNotActive.png',
+                    width : 15,
+                    height :15,
+                    x : 350,
+                    y : 475,
+                    type : 'pageIndicator'
+                }
+            ),
+            page3Indicator = new DefaultButton(
+                {
+                    textureActive : 'resources/pageIndicatorActive.png',
+                    textureNotActive : 'resources/pageIndicatorNotActive.png',
+                    width : 15,
+                    height :15,
+                    x : 400,
+                    y : 475,
+                    type : 'pageIndicator'
                 }
             );
 
@@ -121,6 +157,9 @@ function PayTable(x, y, width, height){
 
         paytableLeftSelector.init(rootContainer);
         paytableRightSelector.init(rootContainer);
+        page1Indicator.init(rootContainer);
+        page2Indicator.init(rootContainer);
+        page3Indicator.init(rootContainer);
         mainContainer.addChild(rootContainer);
 
         paytableLeftSelector.onMouseClickCallback = me.onLeftSelectorButtonClick;
@@ -150,6 +189,10 @@ function PayTable(x, y, width, height){
 
         me.paytableLeftSelector = paytableLeftSelector;
         me.paytableRightSelector = paytableRightSelector;
+
+        me.page1Indicator = page1Indicator;
+        me.page2Indicator = page2Indicator;
+        me.page3Indicator = page3Indicator;
     };
 
     me.onPaytableButtonClick = function(){
