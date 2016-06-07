@@ -40,6 +40,9 @@ winModule.init(stage);
 var payTable = new PayTable(60, 10, 770, 490);
 payTable.init(stage);
 
+var gamerules = new Gamerules(60, 10, 770, 490);
+gamerules.init(stage);
+
 animate();
 function animate(){
 	for( var i = 0; i < toUpdate.length; i++ ){

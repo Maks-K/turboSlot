@@ -126,6 +126,7 @@ function KeyPad(x, y, width, height){
         maxBetButton.condition = 'notPressed';
         maxBetButton.onMouseClickCallback = this.onMaxBetButtonClick;
         paytableButton.onMouseClickCallback = this.onPaytableButtonClick;
+        gamerulesButton.onMouseClickCallback = this.onGamerulesButtonButtonClick;
 
 
             mainContainer.addChild(rootContainer);
@@ -145,7 +146,7 @@ function KeyPad(x, y, width, height){
     this.onMaxBetButtonClick = function(){
         if(me.betLevelSelector.value != me.betLevelSelector.max && spinModule.checkAllReelsState('stopped')){
             this.condition = 'pressed';
-            me.betLevelSelector.setNewValue(me.betLevelSelector.max)
+            me.betLevelSelector.setNewValue(me.betLevelSelector.max);
             betlineIndicators.onShowAllBetlineSituations();
         }else if(me.betLevelSelector.value == me.betLevelSelector.max || !spinModule.checkAllReelsState('stopped')){
             this.condition = 'notPressed';
@@ -154,5 +155,8 @@ function KeyPad(x, y, width, height){
     };
     this.onPaytableButtonClick = function () {
         fireEvent('paytableButtonClick');
+    };
+    this.onGamerulesButtonButtonClick = function () {
+        fireEvent('gamerulesButtonButtonClick');
     }
 }

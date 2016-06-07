@@ -20,6 +20,7 @@ function PayTable(x, y, width, height){
     this.sym4Explanation = null;
     this.texts = [];
     this.pages = [];
+    this.pageIndicators = [];
 
 
     this.x = x;
@@ -47,8 +48,8 @@ function PayTable(x, y, width, height){
             sym6Explanation = new PIXI.Text('test'),
             paytableLeftSelector = new DefaultButton(
                 {
-                    textureActive : 'resources/paytableLeftSelector.png',
-                    textureNotActive : 'resources/paytableLeftSelector.png',
+                    textureActive : 'resources/leftSelector.png',
+                    textureNotActive : 'resources/leftSelector.png',
                     width : 70,
                     height :70,
                     x : 40,
@@ -58,8 +59,8 @@ function PayTable(x, y, width, height){
             ),
             paytableRightSelector = new DefaultButton(
                 {
-                    textureActive : 'resources/paytableRightSelector.png',
-                    textureNotActive : 'resources/paytableRightSelector.png',
+                    textureActive : 'resources/rightSelector.png',
+                    textureNotActive : 'resources/rightSelector.png',
                     width : 70,
                     height :70,
                     x : 730,
@@ -73,9 +74,9 @@ function PayTable(x, y, width, height){
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
                     width : 15,
                     height :15,
-                    x : 300,
+                    x : 325,
                     y : 475,
-                    type : 'pageIndicator'
+                    type : '1'
                 }
             ),
             page2Indicator = new DefaultButton(
@@ -84,9 +85,9 @@ function PayTable(x, y, width, height){
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
                     width : 15,
                     height :15,
-                    x : 350,
+                    x : 375,
                     y : 475,
-                    type : 'pageIndicator'
+                    type : '2'
                 }
             ),
             page3Indicator = new DefaultButton(
@@ -95,9 +96,9 @@ function PayTable(x, y, width, height){
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
                     width : 15,
                     height :15,
-                    x : 400,
+                    x : 425,
                     y : 475,
-                    type : 'pageIndicator'
+                    type : '3'
                 }
             );
 
@@ -120,7 +121,8 @@ function PayTable(x, y, width, height){
         me.texts.push(sym1Explanation, sym2Explanation, sym3Explanation, sym4Explanation, sym5Explanation, sym6Explanation);
 
         sym1Explanation.position.set(330, 30);
-        sym1Explanation.text = 'We gonna chung, go to hizzle quizzle, shizzle my nizzle crocodizzle. Duis nizzle pimpin\'. Ma nizzle rutrum shizzle my nizzle crocodizzle ante';
+        sym1Explanation.text = 'We gonna chung, go to hizzle quizzle, shizzle my nizzle crocodizzle. Duis nizzle pimpin. Ma nizzle rutrum shizzle my nizzle crocodizzle ante';
+
 
         sym2Explanation.position.set(330, 250);
         sym2Explanation.text = 'Pimpin\' tellizzle mah nizzle, pulvinizzle sheezy, condimentizzle eget, vehicula yo mamma, dizzle. Rizzle sizzle leo bizzle sem hendrerizzle mattis';
@@ -132,7 +134,7 @@ function PayTable(x, y, width, height){
         sym4Explanation.text = 'Crizzle mofo shut the shizzle up dope. Vestibulizzle urna quizzle, rhoncizzle a, lacinia check out this, check out this bow wow wow, bling bling';
 
         sym5Explanation.position.set(330, 30);
-        sym5Explanation.text = 'Crackalackin ipsum dolizzle fizzle the bizzle, consectetuer adipiscing elizzle. Sizzle crackalackin shizzlin dizzle, aliquet volutpizzle, suscipit quizzle, fo shizzle vizzle, my shizz';
+        sym5Explanation.text = 'Crackalackin ipsum dolizzle fizzle the bizzle, consectetuer adipiscing elizzle. Sizzle crackalackin shizzlin dizzle, aliquet volutpizzle, suscipit quizzle, fo shizzle vizzle';
 
         sym6Explanation.position.set(330, 250);
         sym6Explanation.text = 'Owned ante nibh, suscipizzle uhuh ... yih!, vestibulum daahng dawg, phat cool, pimpin\'. Mauris owned mauris. Sizzle non magna phat amet risizzle iaculizzle owned.';
@@ -140,7 +142,7 @@ function PayTable(x, y, width, height){
 
         for (var i = 0; i < me.texts.length; i++){
             me.texts[i].style.wordWrap = true;
-            me.texts[i].style.wordWrapWidth = 400;
+            me.texts[i].style.wordWrapWidth = 360;
         }
 
 
@@ -154,17 +156,22 @@ function PayTable(x, y, width, height){
 
         rootContainer.addChild(backGround, page1, page2, page3);
         me.pages.push(page1, page2, page3);
+        me.pageIndicators.push(page1Indicator, page2Indicator, page3Indicator);
 
         paytableLeftSelector.init(rootContainer);
         paytableRightSelector.init(rootContainer);
-        page1Indicator.init(rootContainer);
-        page2Indicator.init(rootContainer);
-        page3Indicator.init(rootContainer);
+
+        for (var j = 0; j < me.pageIndicators.length; j++){
+            me.pageIndicators[j].init(rootContainer);
+            me.pageIndicators[j].onMouseClickCallback = me.onPageIndicatorClick.bind(this, j);
+        }
+
+        page1Indicator.setDisabledState();
+
         mainContainer.addChild(rootContainer);
 
         paytableLeftSelector.onMouseClickCallback = me.onLeftSelectorButtonClick;
         paytableRightSelector.onMouseClickCallback = me.onRightSelectorButtonClick;
-
 
         me.rootContainer = rootContainer;
         me.page1 = page1;
@@ -207,10 +214,13 @@ function PayTable(x, y, width, height){
       for(var i  = 0; i < me.pages.length; i++){
           if(me.pages[i].visible == true){
               me.pages[i].visible = false;
+              me.pageIndicators[i].setEnabledState()
               if(i == 0){
                   me.pages[me.pages.length-1].visible = true;
+                  me.pageIndicators[me.pages.length-1].setDisabledState()
               }else{
                   me.pages[i-1].visible = true;
+                  me.pageIndicators[me.pages.length-1].setDisabledState()
               }
               return true;
           }
@@ -221,19 +231,35 @@ function PayTable(x, y, width, height){
         for(var i  = 0; i < me.pages.length; i++){
             if(me.pages[i].visible == true){
                 me.pages[i].visible = false;
+                me.pageIndicators[i].setEnabledState()
                 if(i == me.pages.length-1){
                     me.pages[0].visible = true;
+                    me.pageIndicators[0].setDisabledState()
                 }else{
                     me.pages[i+1].visible = true;
+                    me.pageIndicators[i+1].setDisabledState()
                 }
                 return true;
             }
         }
     };
+    me.onPageIndicatorClick = function(index){
+        for(var i  = 0; i < me.pages.length; i++) {
+            if(me.pageIndicators[i].buttonType == index + 1){
+                me.pages[i].visible = true;
+                me.pageIndicators[i].setDisabledState()
+            }else{
+                me.pages[i].visible = false;
+                me.pageIndicators[i].setEnabledState()
+            }
+        }
+    };
+
     me.hide = function(){
         me.rootContainer.visible = false;
     };
 
     addListener('paytableButtonClick', me.onPaytableButtonClick);
+    addListener('gamerulesButtonButtonClick', me.hide);
     addListener('spinButtonClick', me.hide);
 }
