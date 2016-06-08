@@ -27,10 +27,8 @@ function Gamerules(x, y, width, height){
 
     this.indicatorsNum = 4;
     this.indicatorsWidth = 15;
-    this.indicatorsOffset = 175;
+    this.indicatorsOffset = 50;
     this.firstPageIndicatorOffsetX = (this.width - ((this.indicatorsNum - 1) * this.indicatorsOffset))/2;
-
-    console.log(this.indicatorsNum * this.indicatorsOffset);
 
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
@@ -188,7 +186,7 @@ function Gamerules(x, y, width, height){
         me.page3Indicator = page3Indicator;
     };
 
-    me.onGamerulesButtonButtonClick = function(){
+    me.onGamerulesButtonClick = function(){
         if(!me.rootContainer.visible){
             me.rootContainer.visible = true;
         } else if(me.rootContainer.visible){
@@ -200,13 +198,13 @@ function Gamerules(x, y, width, height){
         for(var i  = 0; i < me.pages.length; i++){
             if(me.pages[i].visible == true){
                 me.pages[i].visible = false;
-                me.pageIndicators[i].setEnabledState()
+                me.pageIndicators[i].setEnabledState();
                 if(i == 0){
                     me.pages[me.pages.length-1].visible = true;
                     me.pageIndicators[me.pages.length-1].setDisabledState()
                 }else{
                     me.pages[i-1].visible = true;
-                    me.pageIndicators[me.pages.length-1].setDisabledState()
+                    me.pageIndicators[i-1].setDisabledState()
                 }
                 return true;
             }
@@ -217,7 +215,7 @@ function Gamerules(x, y, width, height){
         for(var i  = 0; i < me.pages.length; i++){
             if(me.pages[i].visible == true){
                 me.pages[i].visible = false;
-                me.pageIndicators[i].setEnabledState()
+                me.pageIndicators[i].setEnabledState();
                 if(i == me.pages.length-1){
                     me.pages[0].visible = true;
                     me.pageIndicators[0].setDisabledState()
@@ -244,7 +242,7 @@ function Gamerules(x, y, width, height){
         me.rootContainer.visible = false;
     };
 
-    addListener('gamerulesButtonButtonClick', me.onGamerulesButtonButtonClick);
+    addListener('gamerulesButtonClick', me.onGamerulesButtonClick);
     addListener('paytableButtonClick', me.hide);
     addListener('spinButtonClick', me.hide);
 }

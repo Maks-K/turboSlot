@@ -43,6 +43,9 @@ payTable.init(stage);
 var gamerules = new Gamerules(60, 10, 770, 490);
 gamerules.init(stage);
 
+var autoPlay = new AutoPlay(520, 285, 400, 250);
+autoPlay.init(stage);
+
 animate();
 function animate(){
 	for( var i = 0; i < toUpdate.length; i++ ){

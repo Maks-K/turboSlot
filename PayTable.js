@@ -29,9 +29,10 @@ function PayTable(x, y, width, height){
     this.height = height;
 
     this.indicatorsNum = 3;
-    this.indicatorsOffset = 50;
     this.indicatorsWidth = 15;
-    this.firstPageIndicatorOffsetX = (this.width - this.indicatorsNum * this.indicatorsOffset)/2 + this.indicatorsWidth;
+    this.indicatorsOffset = 50;
+    this.firstPageIndicatorOffsetX = (this.width - ((this.indicatorsNum - 1) * this.indicatorsOffset))/2;
+
 
     console.log(this.firstPageIndicatorOffsetX);
 
@@ -221,13 +222,13 @@ function PayTable(x, y, width, height){
       for(var i  = 0; i < me.pages.length; i++){
           if(me.pages[i].visible == true){
               me.pages[i].visible = false;
-              me.pageIndicators[i].setEnabledState()
+              me.pageIndicators[i].setEnabledState();
               if(i == 0){
                   me.pages[me.pages.length-1].visible = true;
                   me.pageIndicators[me.pages.length-1].setDisabledState()
               }else{
                   me.pages[i-1].visible = true;
-                  me.pageIndicators[me.pages.length-1].setDisabledState()
+                  me.pageIndicators[i-1].setDisabledState()
               }
               return true;
           }
@@ -238,7 +239,7 @@ function PayTable(x, y, width, height){
         for(var i  = 0; i < me.pages.length; i++){
             if(me.pages[i].visible == true){
                 me.pages[i].visible = false;
-                me.pageIndicators[i].setEnabledState()
+                me.pageIndicators[i].setEnabledState();
                 if(i == me.pages.length-1){
                     me.pages[0].visible = true;
                     me.pageIndicators[0].setDisabledState()

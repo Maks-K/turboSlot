@@ -31,13 +31,18 @@ function SpinButtonModule(){
 	this.onQuickStopped = function(){
 		me.spinButton.enabled = false;
 	};
-	
+
 	this.onAllReelsStopped = function(){
 		me.spinButton.setState('up');
 		me.spinButton.enabled = true;
 		me.spinButton.setEnabledState();
 	};
 
+	this.onAutoPlayStarted = function(){
+		me.spinButton.setDisabledState();
+	};
+
 	addListener('quickStopped', me.onQuickStopped);
 	addListener('allReelsStopped', me.onAllReelsStopped);
+	addListener('autoPlayStarted', me.onAutoPlayStarted);
 }

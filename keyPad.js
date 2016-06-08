@@ -126,7 +126,8 @@ function KeyPad(x, y, width, height){
         maxBetButton.condition = 'notPressed';
         maxBetButton.onMouseClickCallback = this.onMaxBetButtonClick;
         paytableButton.onMouseClickCallback = this.onPaytableButtonClick;
-        gamerulesButton.onMouseClickCallback = this.onGamerulesButtonButtonClick;
+        gamerulesButton.onMouseClickCallback = this.onGamerulesButtonClick;
+        autoPlayButton.onMouseClickCallback = this.onAutoPlayButtonClick;
 
 
             mainContainer.addChild(rootContainer);
@@ -156,7 +157,10 @@ function KeyPad(x, y, width, height){
     this.onPaytableButtonClick = function () {
         fireEvent('paytableButtonClick');
     };
-    this.onGamerulesButtonButtonClick = function () {
-        fireEvent('gamerulesButtonButtonClick');
+    this.onGamerulesButtonClick = function () {
+        fireEvent('gamerulesButtonClick');
+    };
+    this.onAutoPlayButtonClick = function () {
+        fireEvent('autoPlayButtonClick');
     }
 }

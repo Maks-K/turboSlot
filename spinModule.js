@@ -1,6 +1,8 @@
 function SpinModule(reels) {
     this.reels = reels;
     var me = this;
+    var isAutoPlay = false;
+    var autoplaySpinsLeft = 0;
 
     this.reelsState = ['stopped', 'stopped', 'stopped'];
     this.lastResponse = {};
@@ -38,6 +40,7 @@ function SpinModule(reels) {
     this.isQuickStop = false;
     //this.isStopping = true;
 
+
     this.spinStart = function () {
 
 
@@ -50,7 +53,7 @@ function SpinModule(reels) {
                 me.reelSpinStop(0, me.lastResponse.reelStopPos[0], 0);
             //    me.isStopping = true;
             }
-        }, 10000);
+        }, 3000);
     };
 
     this.onReelSpinStopped = function (reelNum) {
@@ -58,6 +61,9 @@ function SpinModule(reels) {
 
         if(me.checkAllReelsState('stopped')){
             fireEvent('allReelsStopped');
+            if(isAutoPlay){
+                me.autoplayAnotherRound();
+            }
         } else {
 
             fireEvent('reelSpinStop', {
@@ -89,6 +95,27 @@ function SpinModule(reels) {
         }
     };
 
+    this.onAutoplayStarted = function(spinsNum){
+        if (me.checkAllReelsState('stopped')){
+            isAutoPlay = true;
+            autoplaySpinsLeft = spinsNum;
+            fireEvent('ServerRequest', {action : 'spin'});
+            me.spinStart();
+            autoplaySpinsLeft--;
+            console.log(autoplaySpinsLeft);
+        }
+    };
+
+    this.autoplayAnotherRound = function(){
+        if (me.checkAllReelsState('stopped') && autoplaySpinsLeft > 0){
+            fireEvent('ServerRequest', {action : 'spin'});
+            me.spinStart();
+            autoplaySpinsLeft--;
+            isAutoPlay = false;
+            console.log(autoplaySpinsLeft);
+        }
+    };
+
     this.onServerResponse = function (response) {
           me.lastResponse = response;
     };
@@ -98,6 +125,8 @@ function SpinModule(reels) {
     addListener ('spinButtonClick', me.onSpinButtonClick);
 
     addListener ('ServerResponse', me.onServerResponse);
+
+    addListener('autoPlayStarted', me.onAutoplayStarted)
 
 }
 
