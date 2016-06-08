@@ -28,6 +28,13 @@ function PayTable(x, y, width, height){
     this.width = width;
     this.height = height;
 
+    this.indicatorsNum = 3;
+    this.indicatorsOffset = 50;
+    this.indicatorsWidth = 15;
+    this.firstPageIndicatorOffsetX = (this.width - this.indicatorsNum * this.indicatorsOffset)/2 + this.indicatorsWidth;
+
+    console.log(this.firstPageIndicatorOffsetX);
+
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
             page1 = new PIXI.Container(),
@@ -72,9 +79,9 @@ function PayTable(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 325,
+                    x : this.firstPageIndicatorOffsetX,//325,
                     y : 475,
                     type : '1'
                 }
@@ -83,9 +90,9 @@ function PayTable(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 375,
+                    x : this.firstPageIndicatorOffsetX + this.indicatorsOffset,//375,
                     y : 475,
                     type : '2'
                 }
@@ -94,9 +101,9 @@ function PayTable(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 425,
+                    x : this.firstPageIndicatorOffsetX + 2 * this.indicatorsOffset,//425,
                     y : 475,
                     type : '3'
                 }

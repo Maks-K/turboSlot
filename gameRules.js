@@ -25,6 +25,13 @@ function Gamerules(x, y, width, height){
     this.width = width;
     this.height = height;
 
+    this.indicatorsNum = 4;
+    this.indicatorsWidth = 15;
+    this.indicatorsOffset = 175;
+    this.firstPageIndicatorOffsetX = (this.width - ((this.indicatorsNum - 1) * this.indicatorsOffset))/2;
+
+    console.log(this.indicatorsNum * this.indicatorsOffset);
+
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
             page1 = new PIXI.Container(),
@@ -62,9 +69,9 @@ function Gamerules(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 325,
+                    x : this.firstPageIndicatorOffsetX,//325,
                     y : 475,
                     type : '1'
                 }
@@ -73,9 +80,9 @@ function Gamerules(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 375,
+                    x : this.firstPageIndicatorOffsetX + this.indicatorsOffset,//375,
                     y : 475,
                     type : '2'
                 }
@@ -84,9 +91,9 @@ function Gamerules(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 425,
+                    x : this.firstPageIndicatorOffsetX + 2 * this.indicatorsOffset,//425,
                     y : 475,
                     type : '3'
                 }
@@ -95,9 +102,9 @@ function Gamerules(x, y, width, height){
                 {
                     textureActive : 'resources/pageIndicatorActive.png',
                     textureNotActive : 'resources/pageIndicatorNotActive.png',
-                    width : 15,
+                    width : this.indicatorsWidth,//15,
                     height :15,
-                    x : 475,
+                    x : this.firstPageIndicatorOffsetX + 3 * this.indicatorsOffset,//475,
                     y : 475,
                     type : '4'
                 }
