@@ -7,17 +7,24 @@ function AutoPlay (x, y, width, height){
     this.height = height;
 
     this.rootContainer = null;
+    this.notStartedContainer = null;
+    this.startedContainer = null;
     this.background = null;
     this.title = null;
     this.button10 = null;
     this.button50 = null;
     this.button100 = null;
+    this.roundsCounter = null;
+    this.roundsCounterBackground = null;
+    this.activeAutoplayTitle = null;
+    this.stopButton = null;
     this.buttons = [];
 
 
     this.init = function (mainContainer){
         var rootContainer = new PIXI.Container(),
-            buttonsContainer = new PIXI.Container(),
+            notStartedContainer = new PIXI.Container(),
+            startedContainer = new PIXI.Container(),
             background = new PIXI.Graphics(),
             title = new PIXI.Text('AUTOPLAY OPTIONS'),
             button10 = new DefaultButton(
@@ -55,6 +62,21 @@ function AutoPlay (x, y, width, height){
                     type : '7',
                     text : '7'
                 }
+            ),
+            roundsCounter = new PIXI.Text('test'),
+            roundsCounterBackground = new PIXI.Graphics(),
+            activeAutoplayTitle = new PIXI.Text('ROUNDS LEFT:'),
+            stopButton = new DefaultButton(
+                {
+                    textureActive : 'resources/numberHolder.png',
+                    textureNotActive : 'resources/numberHolder.png',
+                    width : 125,
+                    height :75,
+                    x : 325,
+                    y : 200,
+                    type : 'STOP',
+                    text : 'STOP'
+                }
             );
 
         rootContainer.position.set(this.x, this.y);
@@ -70,14 +92,36 @@ function AutoPlay (x, y, width, height){
         title.anchor.set(0.5);
         title.style.fill = 'white';
 
-        rootContainer.addChild(background, title);
+        notStartedContainer.addChild(title);
 
         this.buttons.push(button10, button50, button100);
         for(var i = 0; i < this.buttons.length; i++){
-            this.buttons[i].init(rootContainer);
+            this.buttons[i].init(notStartedContainer);
             this.buttons[i].showTitle();
             this.buttons[i].onMouseClickCallback = me.onAutoplayOptionSelected.bind(this.buttons[i]);
         }
+
+        rootContainer.addChild(background, notStartedContainer);
+
+        roundsCounter.position.set(200, 115);
+        roundsCounter.anchor.set(0.5, 0.5);
+        roundsCounter.style.fill = 'white';
+        roundsCounterBackground.beginFill(0x111111);
+        roundsCounterBackground.drawRect(150, 75, 100, 75);
+        roundsCounterBackground.endFill();
+        activeAutoplayTitle.position.set(this.width/2, 35);
+        activeAutoplayTitle.anchor.set(0.5);
+        activeAutoplayTitle.style.fill = 'white';
+        startedContainer.addChild(roundsCounterBackground, roundsCounter, activeAutoplayTitle);
+        stopButton.init(startedContainer);
+        stopButton.onMouseClickCallback = me.onStopButtonClick;
+        stopButton.setTextParams('bold 30px Arial', 'black', 'purple', 0, false);
+        stopButton.showTitle();
+
+
+       startedContainer.visible = false;
+
+        rootContainer.addChild(startedContainer);
 
         mainContainer.addChild(rootContainer);
 
@@ -87,6 +131,12 @@ function AutoPlay (x, y, width, height){
         this.button10 = button10;
         this.button50 = button50;
         this.button100 = button100;
+        this.notStartedContainer = notStartedContainer;
+        this.startedContainer = startedContainer;
+        this.roundsCounter = roundsCounter;
+        this.roundsCounterBackground = roundsCounterBackground;
+        this.activeAutoplayTitle = activeAutoplayTitle;
+        this.stopButton = stopButton;
     };
 
     me.onAutoPlayButtonClick = function(){
@@ -101,7 +151,26 @@ function AutoPlay (x, y, width, height){
         var counter = +this.buttonType;
         console.log(counter);
         fireEvent('autoPlayStarted', counter);
+        me.showActiveAutoplay(counter-1);
     };
 
-    addListener('autoPlayButtonClick', me.onAutoPlayButtonClick)
+    me.showActiveAutoplay = function(number){
+        me.roundsCounter.text = number;
+        me.notStartedContainer.visible = false;
+        me.startedContainer.visible = true;
+    };
+    me.hideActiveAutoplay = function(){
+        me.roundsCounter.text = 0;
+        me.notStartedContainer.visible = true;
+        me.startedContainer.visible = false;
+    };
+
+    me.onStopButtonClick = function(){
+        fireEvent('stopButtonClicked');
+        me.hideActiveAutoplay();
+    };
+
+    addListener('autoPlayButtonClick', me.onAutoPlayButtonClick);
+    addListener('autoPlayRoundStarted', me.showActiveAutoplay);
+    addListener('autoPlayComplete', me.hideActiveAutoplay)
 }

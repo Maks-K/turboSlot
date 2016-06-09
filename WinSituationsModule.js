@@ -21,5 +21,6 @@ function WinSituationsModule(){
 
     addListener('ServerResponse', me.onServerResponse);
     addListener('allReelsStopped', me.onAllReelsStopped);
+    addListener('autoPlayRoundFinished', me.onAllReelsStopped);
     addListener ('reelSpinStart', me.onReelSpinStart);
 }

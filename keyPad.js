@@ -162,5 +162,15 @@ function KeyPad(x, y, width, height){
     };
     this.onAutoPlayButtonClick = function () {
         fireEvent('autoPlayButtonClick');
-    }
+    };
+    this.onReelSpinStart = function () {
+        me.maxBetButton.setDisabledState();
+    };
+
+    this.onAllReelsStopped = function () {
+        me.maxBetButton.setEnabledState();
+    };
+
+    addListener('reelSpinStart', me.onReelSpinStart);
+    addListener('allReelsStopped', me.onAllReelsStopped)
 }

@@ -111,7 +111,8 @@ function WinModule (x, y){
 		me.hideWinBanners();
 	};
 
-addListener('ServerResponse', me.onServerResponse)
+addListener('ServerResponse', me.onServerResponse);
 addListener('allReelsStopped', me.onAllReelsStopped);
+addListener('autoPlayRoundFinished', me.onAllReelsStopped);
 addListener ('reelSpinStart', me.onReelSpinStart);
 }

@@ -42,7 +42,7 @@ function SpinModule(reels) {
 
 
     this.spinStart = function () {
-
+        clearTimeout(me.stopTimerId1);
 
         me.reelSpinStart(0);
         me.reelSpinStart(1);
@@ -60,10 +60,14 @@ function SpinModule(reels) {
         me.reelsState[reelNum] = 'stopped';
 
         if(me.checkAllReelsState('stopped')){
-            fireEvent('allReelsStopped');
             if(isAutoPlay){
                 me.autoplayAnotherRound();
+                fireEvent('autoPlayRoundFinished');
+            }else{
+                fireEvent('allReelsStopped');
+                fireEvent('autoPlayComplete');
             }
+
         } else {
 
             fireEvent('reelSpinStop', {
@@ -108,13 +112,26 @@ function SpinModule(reels) {
 
     this.autoplayAnotherRound = function(){
         if (me.checkAllReelsState('stopped') && autoplaySpinsLeft > 0){
-            fireEvent('ServerRequest', {action : 'spin'});
-            me.spinStart();
+            me.stopTimerId1 = setTimeout(function(){
+                fireEvent('ServerRequest', {action : 'spin'});
+                fireEvent('autoPlayRoundStarted', autoplaySpinsLeft);
+                me.spinStart();
+            }, 1500);
             autoplaySpinsLeft--;
-            isAutoPlay = false;
+            if(autoplaySpinsLeft == 0){
+                isAutoPlay = false;
+            }
             console.log(autoplaySpinsLeft);
         }
     };
+
+    this.onAutoplayStopped = function(){
+        isAutoPlay = false;
+        autoplaySpinsLeft = 0;
+        clearTimeout(me.stopTimerId1);
+        console.log(isAutoPlay, autoplaySpinsLeft)
+    };
+
 
     this.onServerResponse = function (response) {
           me.lastResponse = response;
@@ -126,7 +143,9 @@ function SpinModule(reels) {
 
     addListener ('ServerResponse', me.onServerResponse);
 
-    addListener('autoPlayStarted', me.onAutoplayStarted)
+    addListener('autoPlayStarted', me.onAutoplayStarted);
+
+    addListener('stopButtonClicked', me.onAutoplayStopped)
 
 }
 
