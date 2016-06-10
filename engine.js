@@ -37,6 +37,24 @@ winSituationsModule.init(stage);
 var winModule = new WinModule(screenWidth/2, screenHeight/2);
 winModule.init(stage);
 
+var payTablePages = [
+	[{
+		type : 'img',
+		x : 20,
+		y: 20,
+		content : 'SYM1',
+		width : 50,
+		height : 50
+	},{
+		type : 'text',
+		x : 80,
+		y: 20,
+		content : 'TEST TEXT',
+		width : 50,
+		height : 50
+	}]
+];
+
 var payTable = new PayTable(60, 10, 770, 490);
 payTable.init(stage);
 
