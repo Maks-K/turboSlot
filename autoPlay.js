@@ -59,8 +59,8 @@ function AutoPlay (x, y, width, height){
                     height :75,
                     x : 300,
                     y : 150,
-                    type : '7',
-                    text : '7'
+                    type : '100',
+                    text : '100'
                 }
             ),
             roundsCounter = new PIXI.Text('test'),

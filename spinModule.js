@@ -43,7 +43,16 @@ function SpinModule(reels) {
 
     this.spinStart = function () {
         clearTimeout(me.stopTimerId1);
-
+        if(+ keyPad.coins.valueText.text >= me.lastResponse.betLevel * CONFIG.betlines.length){
+            fireEvent('updateBalance', {
+                coins : -(me.lastResponse.betLevel * CONFIG.betlines.length),
+                cash  : -(me.lastResponse.betLevel * me.lastResponse.coinValue *  CONFIG.betlines.length).toFixed(1)
+            });
+        }else if(+ keyPad.coins.valueText.text < me.lastResponse.betLevel * CONFIG.betlines.length){
+            console.log(+keyPad.coins.valueText.text);
+            fireEvent('lowBalance', + keyPad.cash.valueText.text);
+            return true
+        }
         me.reelSpinStart(0);
         me.reelSpinStart(1);
         me.reelSpinStart(2);

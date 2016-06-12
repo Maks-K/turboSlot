@@ -55,7 +55,8 @@ function WinModule (x, y){
 	};
 
 	this.onServerResponse = function(response){
-		me.latestResponse = response
+		me.latestResponse = response;
+		console.log(response);
 	};
 
 	this.displayWin = function(wintype, font, fontColor, strokeColor, strokeThickness, dropShadow){
@@ -70,6 +71,13 @@ function WinModule (x, y){
 	};
 	
 	this.onAllReelsStopped = function(){
+		if(me.latestResponse.win > 0){
+			//fireEvent('updateBalance', me.latestResponse.win);
+			fireEvent('updateBalance', {
+				coins : me.latestResponse.win,
+				cash  : me.latestResponse.win * me.latestResponse.coinValue
+			});
+		}
 		if(me.latestResponse.winType == 'smallWin'){
 
 			me.displayWin('smallWinPresentation', 'bold 40px Arial', 'black', 'purple', 2, false);

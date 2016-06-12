@@ -14,7 +14,7 @@ function ValuesHolder(x, y, width, height, value, title){
 
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
-            backGround = new PIXI.Graphics();
+            backGround = new PIXI.Graphics(),
             title = new PIXI.Text(me.title),
             value = new PIXI.Text(me.value);
 
@@ -40,6 +40,16 @@ function ValuesHolder(x, y, width, height, value, title){
         me.rootContainer = rootContainer;
         me.backGround = backGround;
         me.title = title;
-        me.value = value;
+        me.valueText = value;
+    };
+
+    this.updateValue = function(newValue, action){
+        if(action == 'add'){
+            console.log(+me.valueText.text, newValue);
+            me.valueText.text = ((+me.valueText.text + newValue).toFixed(1)*100)/100
+        }
+        if(action == 'replace'){
+            me.valueText.text = Math.floor(newValue);
+        }
     }
 }

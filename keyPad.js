@@ -10,6 +10,9 @@ function KeyPad(x, y, width, height){
     this.autoPlayButton = null;
     this.betLevelSelector = null;
     this.coinValueSelector = null;
+    this.coins = null;
+    this.cash = null;
+    this.bet = null;
 
     this.x = x;
     this.y = y;
@@ -19,8 +22,9 @@ function KeyPad(x, y, width, height){
     this.init = function(mainContainer){
         var rootContainer = new PIXI.Container(),
             backGround = new PIXI.Graphics(),
-            coins = new ValuesHolder(820,30,120,25,'100','coins'),
-            cash = new ValuesHolder(820,90,120,25,'200','cash'),
+            coins = new ValuesHolder(820,30,120,25,'1000','coins'),
+            cash = new ValuesHolder(820,90,120,25,'100','cash'),
+            bet = new ValuesHolder(820,-30,120,25,'18','bet'),
             paytableButton = new DefaultButton (
                 {
                     textureActive : 'resources/paytableGamerules.png',
@@ -48,7 +52,7 @@ function KeyPad(x, y, width, height){
             maxBetButton = new DefaultButton (
                 {
                     textureActive : 'resources/squareButton.png',
-                    textureNotActive : 'resources/squareButton.png',
+                    textureNotActive : 'resources/squareButtonNotActive.png',
                     width : 160,
                     height :70,
                     x : 550,
@@ -92,7 +96,7 @@ function KeyPad(x, y, width, height){
                     step : 0.1,
                     width : 150,
                     height : 50,
-                    defaultValue : 0.6,
+                    defaultValue : 0.1,
                     type : 'coinValue',
                     title : 'COIN VALUE'
                 }
@@ -102,6 +106,7 @@ function KeyPad(x, y, width, height){
 
         backGround.beginFill(0xCC99FF);
         backGround.drawRect(0, 0, me.width, me.height);
+        backGround.drawRoundedRect(me.width-150, me.height-190, 150, 70, 15);
         backGround.endFill();
 
         rootContainer.addChild(backGround);
@@ -111,6 +116,7 @@ function KeyPad(x, y, width, height){
         autoPlayButton.init(rootContainer);
         coins.init(rootContainer);
         cash.init(rootContainer);
+        bet.init(rootContainer);
         betLevelSelector.init(rootContainer);
         coinValueSelector.init(rootContainer);
 
@@ -142,6 +148,9 @@ function KeyPad(x, y, width, height){
         me.coinValueSelector = coinValueSelector;
         me.maxBetButton = maxBetButton;
         me.autoPlayButton = autoPlayButton;
+        me.coins = coins;
+        me.cash = cash;
+        me.bet = bet;
     };
 
     this.onMaxBetButtonClick = function(){
@@ -171,6 +180,27 @@ function KeyPad(x, y, width, height){
         me.maxBetButton.setEnabledState();
     };
 
+    this.onUpdateBalance = function (winAmount) {
+        me.coins.updateValue(winAmount.coins, 'add');
+        me.cash.updateValue(winAmount.cash, 'add')
+    };
+
+    this.onCoinValueChanged = function (newCoinValue){
+        if(me.coins){
+            me.coins.updateValue(+me.cash.valueText.text / newCoinValue, 'replace');
+        }
+    };
+
+    this.updateBet = function(newLevelValue){
+        if(me.bet){
+            me.bet.updateValue(newLevelValue * CONFIG.betlines.length, 'replace');
+        }
+    };
+
+
     addListener('reelSpinStart', me.onReelSpinStart);
-    addListener('allReelsStopped', me.onAllReelsStopped)
+    addListener('allReelsStopped', me.onAllReelsStopped);
+    addListener('updateBalance', me.onUpdateBalance);
+    addListener('coinValueChanged', me.onCoinValueChanged);
+    addListener('betlevelChanged', me.updateBet)
 }

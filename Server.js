@@ -2,6 +2,7 @@ function Server (){
     var me = this;
 
     me.betlevel = keyPad.betLevelSelector.value;
+    me.coinValue = keyPad.coinValueSelector.value;
     var stopQueue = [
         {
             reelStopPos : [4,6,7],
@@ -46,7 +47,9 @@ function Server (){
             reelStopPos : [],
             winBetlines : [],
             win : 0,
-            winType : ''
+            winType : '',
+            betLevel : me.betlevel,
+            coinValue : me.coinValue
         };
 
         var outcomesArray = [];
@@ -85,13 +88,13 @@ function Server (){
         };
 
         this.generateReelStopPos(CONFIG);
-        console.log(resp.reelStopPos);
+        //console.log(resp.reelStopPos);
 
         this.checkBetlines = function(betlines){
             for(var i = 0; i < betlines.length; i++){
-                console.log('Betline ' + i+1 + ' ' + CONFIG.reels[0].reelSet[outcomesArray[0][betlines[i][0]]],
+/*                console.log('Betline ' + i+1 + ' ' + CONFIG.reels[0].reelSet[outcomesArray[0][betlines[i][0]]],
                             CONFIG.reels[1].reelSet[outcomesArray[1][betlines[i][1]]],
-                            CONFIG.reels[2].reelSet[outcomesArray[2][betlines[i][2]]]);
+                            CONFIG.reels[2].reelSet[outcomesArray[2][betlines[i][2]]]);*/
 
                 var firstReelPosition = outcomesArray[0][betlines[i][0]],
                     secondReelPosition = outcomesArray[1][betlines[i][1]],
@@ -103,18 +106,18 @@ function Server (){
                         CONFIG.reels[2].reelSet[thirdReelPosition]
                 ){
                     resp.winBetlines.push(i);
-                    resp.win = resp.win + 10 * me.betlevel;
+                    resp.win = resp.win + 100 * me.betlevel;
                     console.log('its a winning betline');
                 }
             }
             console.log(resp.winBetlines);
-            if(resp.win/me.betlevel > 0 && resp.win/me.betlevel <= 10){
+            if(resp.win/me.betlevel > 0 && resp.win/me.betlevel <= 100){
                 resp.winType = 'smallWin';
             }
-            if(resp.win/me.betlevel > 10 && resp.win/me.betlevel <= 20){
+            if(resp.win/me.betlevel > 10 && resp.win/me.betlevel <= 200){
                 resp.winType = 'mediumWin';
             }
-            if(resp.win/me.betlevel > 20){
+            if(resp.win/me.betlevel > 200){
                 resp.winType = 'bigWin';
             }
         };
@@ -140,6 +143,9 @@ function Server (){
         }
         me.oldBetlevel = me.betlevel;*/
     };
+    me.onCoinValueChanged = function(newCoinValue){
+        me.coinValue = newCoinValue;
+    };
 
      this.onResponse = function(response){
 
@@ -149,5 +155,6 @@ function Server (){
 
 
     addListener('ServerRequest', me.onRequest);
-    addListener('betlevelChanged', me.onBetlevelChanged)
+    addListener('betlevelChanged', me.onBetlevelChanged);
+    addListener('coinValueChanged', me.onCoinValueChanged)
 }
