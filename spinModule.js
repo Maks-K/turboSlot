@@ -110,6 +110,7 @@ function SpinModule(reels) {
 
     this.onAutoplayStarted = function(spinsNum){
         if (me.checkAllReelsState('stopped')){
+            me.isQuickStop = false;
             isAutoPlay = true;
             autoplaySpinsLeft = spinsNum;
             fireEvent('ServerRequest', {action : 'spin'});
