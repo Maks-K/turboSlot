@@ -139,6 +139,8 @@ function SpinModule(reels) {
         isAutoPlay = false;
         autoplaySpinsLeft = 0;
         clearTimeout(me.stopTimerId1);
+        fireEvent('allReelsStopped');
+        fireEvent('autoPlayComplete');
         console.log(isAutoPlay, autoplaySpinsLeft)
     };
 
